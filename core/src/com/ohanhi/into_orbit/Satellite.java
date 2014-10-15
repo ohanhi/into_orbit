@@ -38,8 +38,8 @@ public class Satellite extends Body {
     private ArrayList<float[]> pathVertices;
     private boolean collided;
 
-    public Satellite(float x, float y, float m, double vx, double vy, PlanetSystem system) {
-        super(x, y, m);
+    public Satellite(float x, float y, double vx, double vy, PlanetSystem system) {
+        super(x, y, 0.1f);
 
         this.curX = x;
         this.curY = y;
