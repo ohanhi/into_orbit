@@ -25,7 +25,7 @@ public class Satellite extends Body {
     }
 
     private static double gravitationalForce(float m1, float m2, double r) {
-        return Game.GRAVITATIONAL_CONSTANT * (m1*m2 / (r*r));
+        return GameUtils.GRAVITATIONAL_CONSTANT * (m1*m2 / (r*r));
     }
 
     private Color color;
@@ -84,7 +84,7 @@ public class Satellite extends Body {
     }
 
     private boolean checkCollision(float r, float radius1, float radius2) {
-        return r < ( radius1 + radius2 + 2*Game.COLLISION_DISTANCE );
+        return r < ( radius1 + radius2 + 2*GameUtils.COLLISION_DISTANCE );
     }
 
     public boolean move(double dt, long gameTick) {
