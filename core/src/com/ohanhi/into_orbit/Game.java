@@ -36,6 +36,7 @@ public class Game extends ApplicationAdapter {
     private int touchX;
     private int touchY;
 
+    private LevelPack levelPack;
     private PlanetSystem planetSystem;
     private Satellite satellite;
 
@@ -70,7 +71,8 @@ public class Game extends ApplicationAdapter {
 
         lastTime = TimeUtils.nanoTime();
 
-        planetSystem = new PlanetSystem(10, screenWidth, screenHeight);
+        levelPack = new LevelPack(screenWidth, screenHeight);
+        planetSystem = levelPack.getLevel(2);
         satellite = null;
     }
 
