@@ -34,6 +34,23 @@ public class PlanetSystem {
         this.screenHeight = screenHeight;
 
         this.planets = this.randomizePlanets(n);
+        setPlanetColors();
+    }
+
+    public PlanetSystem(ArrayList<Planet> planets) {
+        this.planets = planets;
+        setPlanetColors();
+    }
+
+    private void setPlanetColors() {
+        float biggestMass = 0;
+        for (int i = 0; i < planets.size(); i++) {
+            float m = planets.get(i).getM();
+            if (m > biggestMass) biggestMass = m;
+        }
+        for (int i = 0; i < planets.size(); i++) {
+            planets.get(i).setColor(biggestMass);
+        }
     }
 
     public ArrayList<Planet> getPlanets() {

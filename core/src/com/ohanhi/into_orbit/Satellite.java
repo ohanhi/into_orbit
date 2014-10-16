@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class Satellite extends Body {
 
-    private static final float VISUAL_RADIUS = 10;
+    private static final float VISUAL_RADIUS = 5;
 
     private static double dist(double dx, double dy) {
         return Math.sqrt(dx*dx + dy*dy);
@@ -37,15 +37,20 @@ public class Satellite extends Body {
     private ArrayList<Planet> planets;
     private ArrayList<float[]> pathVertices;
     private boolean collided;
+    private int screenWidth;
+    private int screenHeight;
 
-    public Satellite(float x, float y, double vx, double vy, PlanetSystem system) {
+    public Satellite(float x, float y, double vx, double vy, PlanetSystem system,
+                     int screenWidth, int screenHeight) {
         super(x, y, 0.1f);
 
         this.curX = x;
         this.curY = y;
-        this.color = Color.MAGENTA;
+        this.color = Color.WHITE;
         this.vx = vx;
         this.vy = vy;
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
         this.planets = system.getPlanets();
         this.pathVertices = new ArrayList();
         this.traveled = 0;
@@ -53,7 +58,7 @@ public class Satellite extends Body {
 
     @Override
     public float getRadius() {
-        return Satellite.VISUAL_RADIUS;
+        return GameUtils.SATELLITE_VISUAL_RADIUS;
     }
 
     @Override
@@ -73,24 +78,37 @@ public class Satellite extends Body {
 
     public void drawToRenderer(ShapeRenderer renderer) {
         // draw path
-        renderer.setColor(Color.WHITE);
         for (int i = 0; i < pathVertices.size(); i++) {
             float point[] = pathVertices.get(i);
-            renderer.circle(point[0], point[1], 1);
+            Color color = GameUtils.PATH_COLORS ? GameUtils.velocityToColor(point[2]) : Color.LIGHT_GRAY;
+            renderer.setColor(color);
+            renderer.circle(point[0], point[1], GameUtils.PATH_RADIUS);
         }
         // draw self
-        renderer.setColor(color);
-        renderer.circle(getX(), getY(), getRadius());
+        if (!collided) {
+            renderer.setColor(color);
+            renderer.circle(getX(), getY(), getRadius());
+        }
     }
 
     private boolean checkCollision(float r, float radius1, float radius2) {
         return r < ( radius1 + radius2 + 2*GameUtils.COLLISION_DISTANCE );
     }
 
+    private boolean isWithinBoundaries() {
+        float threshold = 20;
+        return ( curX > -1 * threshold
+                && curX < screenWidth + threshold
+                && curY > -1 * threshold
+                && curY < screenHeight + threshold );
+    }
+
     public boolean move(double dt, long gameTick) {
 
         double ax;
         double ay;
+
+        if (!isWithinBoundaries()) collided = true;
 
         /*
         * For each planet:
@@ -105,9 +123,10 @@ public class Satellite extends Body {
             double dy = curY - planet.getY();
             double r = Satellite.dist(dx, dy);
 
-            collided = this.checkCollision((float)r, getRadius(), planet.getRadius());
+            collided = checkCollision((float)r, getRadius(), planet.getRadius());
 
             if (collided) {
+                planet.twinkle();
                 break;
             }
 
@@ -119,19 +138,25 @@ public class Satellite extends Body {
             vy += ay * dt;
         }
 
-        // Move the satellite.
-        float oldX = curX;
-        float oldY = curY;
-        curX += vx * dt;
-        curY += vy * dt;
+        if (!collided) {
 
-        // Grow traveled distance
-        traveled += Satellite.dist(oldX, oldY, curX, curY);
+            // Move the satellite.
+            float oldX = curX;
+            float oldY = curY;
+            curX += vx * dt;
+            curY += vy * dt;
 
-        // Add current position to pathVertices
-        if (gameTick % 5 == 0) {
-            float point[] = {curX, curY};
-            pathVertices.add(0, point);
+            float v = (float)Satellite.dist(vx, vy);
+
+            // Grow traveled distance
+            traveled += Satellite.dist(oldX, oldY, curX, curY);
+
+            // Add current position to pathVertices
+            if (gameTick % 5 == 0) {
+                float point[] = {curX, curY, v};
+                pathVertices.add(0, point);
+            }
+
         }
 
         return collided;

@@ -20,10 +20,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
 
-    public static final double GRAVITATIONAL_CONSTANT = 2.0d;
-    public static final double COLLISION_DISTANCE = 2.0d;
-//    public static final double TIME_STEP = 15.0d;
-
     private OrthographicCamera camera;
     private ShapeRenderer shapeRenderer;
     private int screenWidth = 1980;
@@ -96,7 +92,7 @@ public class Game extends ApplicationAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         // begin a new render and draw the objects
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         planetSystem.drawToRenderer(shapeRenderer);
@@ -115,7 +111,7 @@ public class Game extends ApplicationAdapter {
         float k = 0.005f;
         float vx = k * (x2 - x1);
         float vy = k * (y2 - y1);
-        satellite = new Satellite(x1, y1, vx, vy, planetSystem);
+        satellite = new Satellite(x1, y1, vx, vy, planetSystem, screenWidth, screenHeight);
     }
 
     @Override

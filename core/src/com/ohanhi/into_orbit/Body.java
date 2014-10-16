@@ -16,7 +16,7 @@ public abstract class Body {
         this.x = x;
         this.y = y;
         this.m = m;
-        this.radius = (float)(log(m) * 4);
+        this.radius = (float)(log(m) * 3);
     }
 
     public float getX() {

@@ -12,6 +12,7 @@ public class Planet extends Body {
 
 
     private Color color;
+    private int animationFrames;
 
     /**
      * Creates a new planet. Radius is log of mass.
@@ -26,9 +27,18 @@ public class Planet extends Body {
         this.color = Color.CYAN;
     }
 
+    public void setColor(float biggestMass) {
+        this.color = GameUtils.massToColor(getM(), biggestMass);
+    }
+
+    public void twinkle() {
+        animationFrames = 10;
+    }
+
     public void drawToRenderer(final ShapeRenderer renderer) {
         renderer.setColor(color);
-        renderer.circle(getX(), getY(), getRadius());
+        renderer.circle(getX(), getY(), getRadius() + animationFrames);
+        if (animationFrames > 0) animationFrames--;
     }
 
 }
