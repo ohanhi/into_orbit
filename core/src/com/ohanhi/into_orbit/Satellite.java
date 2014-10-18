@@ -37,11 +37,10 @@ public class Satellite extends Body {
     private ArrayList<Planet> planets;
     private ArrayList<float[]> pathVertices;
     private boolean collided;
-    private int screenWidth;
-    private int screenHeight;
+    private double maxVelocity = 0;
+    protected Game game;
 
-    public Satellite(float x, float y, double vx, double vy, PlanetSystem system,
-                     int screenWidth, int screenHeight) {
+    public Satellite(float x, float y, double vx, double vy, Game game) {
         super(x, y, 0.1f);
 
         this.curX = x;
@@ -49,9 +48,8 @@ public class Satellite extends Body {
         this.color = Color.WHITE;
         this.vx = vx;
         this.vy = vy;
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-        this.planets = system.getPlanets();
+        this.game = game;
+        this.planets = game.planetSystem.getPlanets();
         this.pathVertices = new ArrayList();
         this.traveled = 0;
     }
@@ -71,9 +69,20 @@ public class Satellite extends Body {
         return curY;
     }
 
-
     public double getTraveled() {
         return traveled;
+    }
+
+    public int getTraveledRound() {
+        return (int)Math.round(getTraveled());
+    }
+
+    public double getMaxVelocity() {
+        return maxVelocity;
+    }
+
+    public int getMaxVelocityRound() {
+        return (int)Math.round(getMaxVelocity());
     }
 
     public void drawToRenderer(ShapeRenderer renderer) {
@@ -98,9 +107,9 @@ public class Satellite extends Body {
     private boolean isWithinBoundaries() {
         float threshold = 20;
         return ( curX > -1 * threshold
-                && curX < screenWidth + threshold
+                && curX < game.screenWidth + threshold
                 && curY > -1 * threshold
-                && curY < screenHeight + threshold );
+                && curY < game.screenHeight + threshold );
     }
 
     public boolean move(double dt, long gameTick) {
@@ -108,7 +117,11 @@ public class Satellite extends Body {
         double ax;
         double ay;
 
-        if (!isWithinBoundaries()) collided = true;
+        if (!isWithinBoundaries()) {
+            collided = true;
+            game.createLevelSelectDialog();
+            return false;
+        }
 
         /*
         * For each planet:
@@ -127,6 +140,7 @@ public class Satellite extends Body {
 
             if (collided) {
                 planet.twinkle();
+                game.createLevelSelectDialog();
                 break;
             }
 
@@ -147,19 +161,20 @@ public class Satellite extends Body {
             curY += vy * dt;
 
             float v = (float)Satellite.dist(vx, vy);
+            if (v > maxVelocity) maxVelocity = v;
 
             // Grow traveled distance
             traveled += Satellite.dist(oldX, oldY, curX, curY);
 
             // Add current position to pathVertices
-            if (gameTick % 5 == 0) {
+            if (gameTick % 2 == 0) {
                 float point[] = {curX, curY, v};
                 pathVertices.add(0, point);
             }
 
         }
 
-        return collided;
+        return !collided;
     }
 
     public boolean hasCollided() {

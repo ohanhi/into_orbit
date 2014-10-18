@@ -1,17 +1,22 @@
 package com.ohanhi.into_orbit;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * Created by ohan on 16.10.2014.
  */
 public class GameUtils {
-    public static final double GRAVITATIONAL_CONSTANT = 1.0d;
+    public static final double GRAVITATIONAL_CONSTANT = 8.0d;
     public static final double COLLISION_DISTANCE = 0.0d;
     public static final double TIME_STEP = 15.0d;
-    public static final float PATH_RADIUS = 1.5f;
+    public static final float PATH_RADIUS = 2f;
     public static final float SATELLITE_VISUAL_RADIUS = 5f;
     public static final boolean PATH_COLORS = true;
+
+    public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
     public static Color hsvToRgb(float hue, float saturation, float value, float alpha) {
 
@@ -38,7 +43,7 @@ public class GameUtils {
     }
 
     public static Color velocityToColor(float v) {
-        float hue = Math.abs(1 - (v * 0.15f + 0.3f)) % 1;
+        float hue = Math.abs(1 - (v * 0.1f + 0.3f)) % 1;
         return hsvToRgb(hue, 1, 1, 0.5f);
     }
 }
