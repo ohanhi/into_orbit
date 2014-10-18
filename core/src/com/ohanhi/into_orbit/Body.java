@@ -1,6 +1,6 @@
 package com.ohanhi.into_orbit;
 
-import static java.lang.Math.log;
+import static java.lang.Math.pow;
 
 /**
  * Created by ohan on 15.10.2014.
@@ -16,7 +16,7 @@ public abstract class Body {
         this.x = x;
         this.y = y;
         this.m = m;
-        this.radius = (float)(log(m) * 3);
+        this.radius = (float)(pow(m, 1/3d) * 3);
     }
 
     public float getX() {
