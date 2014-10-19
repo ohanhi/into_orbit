@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class GameUtils {
     public static final double GRAVITATIONAL_CONSTANT = 8.0d;
     public static final double COLLISION_DISTANCE = 0.0d;
-    public static final double TIME_STEP = 15.0d;
+    public static final double TIME_SPEED = 8;
     public static final float PATH_RADIUS = 2f;
     public static final float SATELLITE_VISUAL_RADIUS = 5f;
     public static final boolean PATH_COLORS = true;

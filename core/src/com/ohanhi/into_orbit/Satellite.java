@@ -12,10 +12,8 @@ import java.util.ArrayList;
  */
 public class Satellite extends Body {
 
-    private static final float VISUAL_RADIUS = 5;
-
     private static double dist(double dx, double dy) {
-        return Math.sqrt(dx*dx + dy*dy);
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
     private static double dist(double x1, double y1, double x2, double y2) {
@@ -50,7 +48,7 @@ public class Satellite extends Body {
         this.vy = vy;
         this.game = game;
         this.planets = game.planetSystem.getPlanets();
-        this.pathVertices = new ArrayList();
+        this.pathVertices = new ArrayList<float[]>();
         this.traveled = 0;
     }
 
@@ -87,8 +85,7 @@ public class Satellite extends Body {
 
     public void drawToRenderer(ShapeRenderer renderer) {
         // draw path
-        for (int i = 0; i < pathVertices.size(); i++) {
-            float point[] = pathVertices.get(i);
+        for (float point[] : pathVertices) {
             Color color = GameUtils.PATH_COLORS ? GameUtils.velocityToColor(point[2]) : Color.LIGHT_GRAY;
             renderer.setColor(color);
             renderer.circle(point[0], point[1], GameUtils.PATH_RADIUS);
@@ -112,16 +109,17 @@ public class Satellite extends Body {
                 && curY < game.screenHeight + threshold );
     }
 
-    public boolean move(double dt, long gameTick) {
+    public boolean move(double dt, long gameTick, int subsamples) {
 
-        double ax;
-        double ay;
+        for (int i = 0; i < subsamples; i++) {
+            double ax;
+            double ay;
 
-        if (!isWithinBoundaries()) {
-            collided = true;
-            game.createLevelSelectDialog();
-            return false;
-        }
+            if (!isWithinBoundaries()) {
+                collided = true;
+                game.createLevelSelectDialog();
+                return false;
+            }
 
         /*
         * For each planet:
@@ -129,49 +127,49 @@ public class Satellite extends Body {
         *   2) If not collided, calculate accelerations based
         *      on gravitational force
         */
-        for (int i = 0; i < planets.size(); i++) {
-            Planet planet = planets.get(i);
+            for (Planet planet : planets) {
 
-            double dx = curX - planet.getX();
-            double dy = curY - planet.getY();
-            double r = Satellite.dist(dx, dy);
+                double dx = curX - planet.getX();
+                double dy = curY - planet.getY();
+                double r = Satellite.dist(dx, dy);
 
-            collided = checkCollision((float)r, getRadius(), planet.getRadius());
+                collided = checkCollision((float)r, getRadius(), planet.getRadius());
 
-            if (collided) {
-                planet.twinkle();
-                game.createLevelSelectDialog();
-                break;
+                if (collided) {
+                    planet.twinkle();
+//                game.createLevelSelectDialog();
+                    break;
+                }
+
+                double f = Satellite.gravitationalForce(getM(), planet.getM(), r);
+                ax = -1.0d * (f * (dx / r)) / getM();
+                ay = -1.0d * (f * (dy / r)) / getM();
+
+                vx += ax * dt;
+                vy += ay * dt;
             }
 
-            double f = Satellite.gravitationalForce(getM(), planet.getM(), r);
-            ax = -1.0d * (f * (dx / r)) / getM();
-            ay = -1.0d * (f * (dy / r)) / getM();
+            if (!collided) {
 
-            vx += ax * dt;
-            vy += ay * dt;
-        }
+                // Move the satellite.
+                float oldX = curX;
+                float oldY = curY;
+                curX += vx * dt;
+                curY += vy * dt;
 
-        if (!collided) {
+                float v = (float)Satellite.dist(vx, vy);
+                if (v > maxVelocity) maxVelocity = v;
 
-            // Move the satellite.
-            float oldX = curX;
-            float oldY = curY;
-            curX += vx * dt;
-            curY += vy * dt;
+                // Grow traveled distance
+                traveled += Satellite.dist(oldX, oldY, curX, curY);
 
-            float v = (float)Satellite.dist(vx, vy);
-            if (v > maxVelocity) maxVelocity = v;
+                // Add current position to pathVertices
+                if (i+1 == subsamples && gameTick % 2 == 0) {
+                    float point[] = {curX, curY, v};
+                    pathVertices.add(0, point);
+                }
 
-            // Grow traveled distance
-            traveled += Satellite.dist(oldX, oldY, curX, curY);
-
-            // Add current position to pathVertices
-            if (gameTick % 2 == 0) {
-                float point[] = {curX, curY, v};
-                pathVertices.add(0, point);
             }
-
         }
 
         return !collided;

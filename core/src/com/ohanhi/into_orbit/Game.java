@@ -78,7 +78,7 @@ public class Game extends ApplicationAdapter {
     public void createLevelSelectDialog() {
         String buttons[] = { "1", "2", "3" };
 
-        dialog = new GenericDialog(this, "Select level", "This is a test dialog", buttons);
+        dialog = new GenericDialog(this, "Select level", "", buttons);
         stage = new Stage();
         dialog.show(stage);
 
@@ -103,11 +103,11 @@ public class Game extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameTick++;
-        final double delta = calculateDelta();
+        final double delta = Gdx.graphics.getDeltaTime() * GameUtils.TIME_SPEED;
 
         // move satellite
         if (satellite != null && !satellite.hasCollided()) {
-            satellite.move(delta, gameTick);
+            satellite.move(delta, gameTick, 20);
         }
 
         // tell the camera to update its matrices.
@@ -142,13 +142,6 @@ public class Game extends ApplicationAdapter {
             Gdx.input.setInputProcessor(stage);
         }
         stage.draw();
-    }
-
-    private double calculateDelta() {
-        final long now = TimeUtils.nanoTime();
-        final double delta = (double) (now - lastTime) * 0.0000001;
-        lastTime = now;
-        return delta;
     }
 
     private void launchSatellite(int x1, int y1, int x2, int y2) {
