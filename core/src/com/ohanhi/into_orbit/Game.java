@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,11 +28,10 @@ public class Game extends ApplicationAdapter {
     private SpriteBatch batch;
     private BitmapFont font;
     private long lastTime;
-    private int touchDownX;
-
-    private int touchDownY;
-    private int touchX;
-    private int touchY;
+    private int touchDownX = -1;
+    private int touchDownY = -1;
+    private int touchX = -1;
+    private int touchY = -1;
     private LevelPack levelPack;
 
     private GenericDialog dialog;
@@ -47,21 +47,26 @@ public class Game extends ApplicationAdapter {
     private InputProcessor gameInputProcessor = new InputAdapter() {
         @Override
         public boolean touchDown(int x, int y, int pointer, int button) {
-            Game.this.touchDownX = x;
-            Game.this.touchDownY = y;
+            touchDownX = x;
+            touchDownY = y;
             return true;
         }
 
         @Override
         public boolean touchDragged (int screenX, int screenY, int pointer) {
-            Game.this.touchX = screenX;
-            Game.this.touchY = screenY;
+            touchX = screenX;
+            touchY = screenY;
             return true;
         }
 
         @Override
         public boolean touchUp(int x, int y, int pointer, int button) {
-            Game.this.launchSatellite(Game.this.touchDownX, Game.this.touchDownY, x, y);
+            launchSatellite(touchDownX, touchDownY, touchDownX*2 - x, touchDownY*2 - y);
+
+            touchDownX = -1;
+            touchDownY = -1;
+            touchX = -1;
+            touchY = -1;
             return true;
         }
     };
@@ -125,6 +130,11 @@ public class Game extends ApplicationAdapter {
         if (satellite != null) {
             satellite.drawToRenderer(shapeRenderer);
         }
+        if (touchDownX >= 0 && touchX >= 0) {
+            shapeRenderer.setColor(Color.WHITE);
+            shapeRenderer.circle(touchDownX, touchDownY, GameUtils.SATELLITE_VISUAL_RADIUS);
+            shapeRenderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
+        }
         shapeRenderer.end();
 
         if (satellite != null && satellite.hasCollided()) {
@@ -145,7 +155,7 @@ public class Game extends ApplicationAdapter {
     }
 
     private void launchSatellite(int x1, int y1, int x2, int y2) {
-        float k = 0.005f;
+        float k = 0.01f;
         float vx = k * (x2 - x1);
         float vy = k * (y2 - y1);
         satellite = new Satellite(x1, y1, vx, vy, this);
