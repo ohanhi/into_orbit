@@ -32,7 +32,7 @@ public class Satellite extends Body {
     private float curX;
     private float curY;
     private float traveled;
-    private ArrayList<Planet> planets;
+    private Planet[] planets;
     private ArrayList<float[]> pathVertices;
     private boolean collided;
     private double maxVelocity = 0;

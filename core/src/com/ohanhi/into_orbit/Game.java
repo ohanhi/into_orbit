@@ -76,7 +76,8 @@ public class Game extends ApplicationAdapter {
      */
     public void dialogInput(String title, String input) {
         if (title.equals("Select level")) {
-            this.planetSystem = levelPack.getLevel(Integer.parseInt(input, 10));
+            int n = Integer.parseInt(input, 10);
+            selectLevel(n);
         }
     }
 
@@ -88,6 +89,10 @@ public class Game extends ApplicationAdapter {
         dialog.show(stage);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public void selectLevel(int n) {
+        planetSystem = levelPack.getLevelPlanets(n);
     }
 
     @Override
@@ -174,8 +179,11 @@ public class Game extends ApplicationAdapter {
         camera.setToOrtho(true, screenWidth, screenHeight);
         lastTime = TimeUtils.nanoTime();
 
+        if (levelPack != null) {
+            levelPack.dispose();
+        }
         levelPack = new LevelPack(screenWidth, screenHeight);
-        planetSystem = levelPack.getLevel(3);
+        planetSystem = levelPack.getLevelPlanets(3);
         satellite = null;
     }
 

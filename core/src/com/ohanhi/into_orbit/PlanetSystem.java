@@ -11,55 +11,31 @@ import java.util.ArrayList;
  */
 public class PlanetSystem {
 
-    private ArrayList<Planet> planets;
-    private int screenWidth;
-    private int screenHeight;
+    private Planet[] planets;
 
-    private ArrayList<Planet> randomizePlanets(final int n) {
-        ArrayList<Planet> list = new ArrayList<Planet>(n);
-
-        for (int i = 0; i < n; i++) {
-            float x = (float)Math.random() * screenWidth;
-            float y = (float)Math.random() * screenHeight;
-            float m = (float)Math.random() * 300 + 80;
-            Planet planet = new Planet(x, y, m);
-            list.add(planet);
-        }
-
-        return list;
-    }
-
-    public PlanetSystem(final int n, final int screenWidth, final int screenHeight) {
-        this.screenWidth = screenWidth;
-        this.screenHeight = screenHeight;
-
-        this.planets = this.randomizePlanets(n);
-        setPlanetColors();
-    }
-
-    public PlanetSystem(ArrayList<Planet> planets) {
+    public PlanetSystem(Planet[] planets) {
         this.planets = planets;
         setPlanetColors();
     }
 
     private void setPlanetColors() {
         float biggestMass = 0;
-        for (int i = 0; i < planets.size(); i++) {
-            float m = planets.get(i).getM();
+        for (int i = 0; i < planets.length; i++) {
+            float m = planets[i].getM();
             if (m > biggestMass) biggestMass = m;
         }
-        for (int i = 0; i < planets.size(); i++) {
-            planets.get(i).setColor(biggestMass);
+        for (int i = 0; i < planets.length; i++) {
+            planets[i].setColor(biggestMass);
         }
     }
 
-    public ArrayList<Planet> getPlanets() {
+    public Planet[] getPlanets() {
         return planets;
     }
 
     public void drawToRenderer(ShapeRenderer renderer) {
-        for (int i = 0; i < planets.size(); i++) {
-            planets.get(i).drawToRenderer(renderer);
+        for (int i = 0; i < planets.length; i++) {
+            planets[i].drawToRenderer(renderer);
         }
     }
 
