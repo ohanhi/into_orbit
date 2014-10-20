@@ -15,6 +15,7 @@ public class GameUtils {
     public static final float PATH_RADIUS = 2f;
     public static final float SATELLITE_VISUAL_RADIUS = 5f;
     public static final boolean PATH_COLORS = true;
+    public static final int PATH_VERTEX_COUNT = 1000;
 
     public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
@@ -43,7 +44,7 @@ public class GameUtils {
     }
 
     public static Color velocityToColor(float v) {
-        float hue = Math.abs(1 - (v * 0.1f + 0.3f)) % 1;
+        float hue = Math.abs(1 - (v * 0.07f + 0.3f)) % 1;
         return hsvToRgb(hue, 1, 1, 0.5f);
     }
 }
