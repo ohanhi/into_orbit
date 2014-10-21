@@ -37,6 +37,7 @@ public class Satellite extends Body {
     private boolean collided;
     private double maxVelocity = 0;
     protected Game game;
+    private Goal lastMoveInsideGoal = null;
 
     public Satellite(float x, float y, double vx, double vy, Game game) {
         super(x, y, 0.1f, game.radiusK);
@@ -121,12 +122,32 @@ public class Satellite extends Body {
                 return false;
             }
 
-        /*
-        * For each planet:
-        *   1) Check for collision
-        *   2) If not collided, calculate accelerations based
-        *      on gravitational force
-        */
+            /*
+            * For each Goal:
+            *   1) Check for "collision"
+            *   2) Bump up contact count on collision
+            */
+            for (Goal goal : game.goals) {
+                if (goal instanceof CircularGoal) {
+                    CircularGoal g = ((CircularGoal) goal);
+                    float r = (float)Satellite.dist(curX, curY, g.getX(), g.getY());
+                    if (checkCollision(r, getRadius(), g.getRadius())) {
+                        if (lastMoveInsideGoal == null) {
+                            lastMoveInsideGoal = g;
+                            g.addContact();
+                        }
+                    } else if (lastMoveInsideGoal == g) {
+                        lastMoveInsideGoal = null;
+                    }
+                }
+            }
+
+            /*
+            * For each planet:
+            *   1) Check for collision
+            *   2) If not collided, calculate accelerations based
+            *      on gravitational force
+            */
             for (Planet planet : planets) {
 
                 double dx = curX - planet.getX();
@@ -137,7 +158,7 @@ public class Satellite extends Body {
 
                 if (collided) {
                     planet.twinkle();
-//                game.createLevelSelectDialog();
+                    game.restartLevel();
                     break;
                 }
 
