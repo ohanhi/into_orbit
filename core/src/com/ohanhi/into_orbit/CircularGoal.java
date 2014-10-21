@@ -38,6 +38,12 @@ public class CircularGoal extends Goal {
         if (contacts >= contactGoal) this.achieve();
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        contacts = 0;
+    }
+
     public void drawToRenderer(ShapeRenderer renderer) {
         renderer.setColor(Color.LIGHT_GRAY);
         renderer.circle(x, y, radius);

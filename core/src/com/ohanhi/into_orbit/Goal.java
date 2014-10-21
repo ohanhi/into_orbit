@@ -20,6 +20,10 @@ public abstract class Goal {
         return achieved;
     }
 
+    public void reset() {
+        achieved = false;
+    }
+
     public abstract void drawToRenderer(ShapeRenderer renderer);
 
 }
