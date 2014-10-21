@@ -12,9 +12,10 @@ public class LevelPack {
 
     private final Goal levelGoals[][];
 
-    public LevelPack(int w, int h) {
-        this.w = w;
-        this.h = h;
+    public LevelPack(Game game) {
+        this.w = game.screenWidth;
+        this.h = game.screenHeight;
+        float radiusK = game.radiusK;
         this.levelPlanets = new Planet[][] {
                 {new Planet(0.5f * w, 0.5f * h, 1000)},
                 {new Planet(0.4f * w, 0.5f * h, 500), new Planet(0.6f * w, 0.5f * h, 500)},

@@ -40,6 +40,7 @@ public class Game extends ApplicationAdapter {
     // values that can be used elsewhere
     protected int screenWidth = 1280;
     protected int screenHeight = 800;
+    protected float radiusK = 1;
     protected long gameTick = 0L;
     protected PlanetSystem planetSystem;
     protected Goal[] goals;
@@ -194,6 +195,7 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void resize(final int width, final int height) {
+        radiusK = radiusK * width / screenWidth;
         screenWidth = width;
         screenHeight = height;
         camera.setToOrtho(true, screenWidth, screenHeight);
@@ -203,7 +205,7 @@ public class Game extends ApplicationAdapter {
             levelPack.dispose();
         }
         goals = new Goal[0];
-        levelPack = new LevelPack(screenWidth, screenHeight);
+        levelPack = new LevelPack(this);
         planetSystem = levelPack.getLevelPlanets(3);
         satellite = null;
     }

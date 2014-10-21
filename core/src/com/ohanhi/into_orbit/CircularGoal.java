@@ -10,14 +10,16 @@ public class CircularGoal extends Goal {
     private float x;
     private float y;
     private float radius;
+    private float radiusK;
     private int contactGoal;
     private int contacts = 0;
 
-    public CircularGoal(float x, float y, float radius, int contactGoal) {
+    public CircularGoal(float x, float y, float radius, int contactGoal, float radiusK) {
         super();
         this.x = x;
         this.y = y;
         this.radius = radius;
+        this.radiusK = radiusK;
         this.contactGoal = contactGoal;
     }
 
@@ -30,7 +32,7 @@ public class CircularGoal extends Goal {
     }
 
     public float getRadius() {
-        return radius;
+        return radius * radiusK;
     }
 
     public void addContact() {

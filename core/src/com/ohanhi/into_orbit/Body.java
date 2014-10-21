@@ -11,12 +11,14 @@ public abstract class Body {
     private float y;
     private float m;
     private float radius;
+    private float radiusK;
 
-    public Body(float x, float y, float m) {
+    public Body(float x, float y, float m, float radiusK) {
         this.x = x;
         this.y = y;
         this.m = m;
         this.radius = (float)(pow(m, 1/3d) * 3);
+        this.radiusK = radiusK;
     }
 
     public float getX() {
@@ -32,6 +34,6 @@ public abstract class Body {
     }
 
     public float getRadius() {
-        return radius;
+        return radius * radiusK;
     }
 }

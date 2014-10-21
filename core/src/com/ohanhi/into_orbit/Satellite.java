@@ -39,11 +39,10 @@ public class Satellite extends Body {
     protected Game game;
 
     public Satellite(float x, float y, double vx, double vy, Game game) {
-        super(x, y, 0.1f);
+        super(x, y, 0.1f, game.radiusK);
 
         this.curX = x;
         this.curY = y;
-        this.color = Color.WHITE;
         this.vx = vx;
         this.vy = vy;
         this.game = game;
@@ -54,7 +53,7 @@ public class Satellite extends Body {
 
     @Override
     public float getRadius() {
-        return Const.SATELLITE_VISUAL_RADIUS;
+        return Const.SATELLITE_RADIUS * game.radiusK;
     }
 
     @Override

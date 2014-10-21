@@ -21,8 +21,8 @@ public class Planet extends Body {
      * @param y y-coordinate
      * @param m mass
      */
-    public Planet(float x, float y, float m) {
-        super(x, y, m);
+    public Planet(float x, float y, float m, float radiusK) {
+        super(x, y, m, radiusK);
 
         this.color = Const.PLANET_COLORS[0];
     }
