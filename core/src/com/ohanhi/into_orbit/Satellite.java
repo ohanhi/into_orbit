@@ -32,7 +32,7 @@ public class Satellite extends Body {
     private float curX;
     private float curY;
     private float traveled;
-    private ArrayList<Planet> planets;
+    private Planet[] planets;
     private ArrayList<float[]> pathVertices;
     private boolean collided;
     private double maxVelocity = 0;
@@ -48,7 +48,7 @@ public class Satellite extends Body {
         this.vy = vy;
         this.game = game;
         this.planets = game.planetSystem.getPlanets();
-        this.pathVertices = new ArrayList<float[]>();
+        this.pathVertices = new ArrayList<float[]>(GameUtils.PATH_VERTEX_COUNT);
         this.traveled = 0;
     }
 
@@ -165,6 +165,9 @@ public class Satellite extends Body {
 
                 // Add current position to pathVertices
                 if (i+1 == subsamples && gameTick % 2 == 0) {
+                    if (pathVertices.size() >= GameUtils.PATH_VERTEX_COUNT) {
+                        pathVertices.remove(pathVertices.size()-1);
+                    }
                     float point[] = {curX, curY, v};
                     pathVertices.add(0, point);
                 }

@@ -42,6 +42,7 @@ public class Game extends ApplicationAdapter {
     protected int screenHeight = 800;
     protected long gameTick = 0L;
     protected PlanetSystem planetSystem;
+    protected Goal[] goals;
     protected Satellite satellite;
 
     private InputProcessor gameInputProcessor = new InputAdapter() {
@@ -76,7 +77,8 @@ public class Game extends ApplicationAdapter {
      */
     public void dialogInput(String title, String input) {
         if (title.equals("Select level")) {
-            this.planetSystem = levelPack.getLevel(Integer.parseInt(input, 10));
+            int n = Integer.parseInt(input, 10);
+            selectLevel(n);
         }
     }
 
@@ -88,6 +90,11 @@ public class Game extends ApplicationAdapter {
         dialog.show(stage);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public void selectLevel(int n) {
+        planetSystem = levelPack.getLevelPlanets(n);
+        goals = levelPack.getLevelGoals(n);
     }
 
     @Override
@@ -126,6 +133,9 @@ public class Game extends ApplicationAdapter {
         Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (int i = 0; i < goals.length; i++) {
+            goals[i].drawToRenderer(shapeRenderer);
+        }
         planetSystem.drawToRenderer(shapeRenderer);
         if (satellite != null) {
             satellite.drawToRenderer(shapeRenderer);
@@ -174,8 +184,12 @@ public class Game extends ApplicationAdapter {
         camera.setToOrtho(true, screenWidth, screenHeight);
         lastTime = TimeUtils.nanoTime();
 
+        if (levelPack != null) {
+            levelPack.dispose();
+        }
+        goals = new Goal[0];
         levelPack = new LevelPack(screenWidth, screenHeight);
-        planetSystem = levelPack.getLevel(3);
+        planetSystem = levelPack.getLevelPlanets(3);
         satellite = null;
     }
 
