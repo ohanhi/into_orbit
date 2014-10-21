@@ -19,13 +19,10 @@ public class PlanetSystem {
     }
 
     private void setPlanetColors() {
-        float biggestMass = 0;
         for (int i = 0; i < planets.length; i++) {
-            float m = planets[i].getM();
-            if (m > biggestMass) biggestMass = m;
-        }
-        for (int i = 0; i < planets.length; i++) {
-            planets[i].setColor(biggestMass);
+            planets[i].setColor(
+                    Const.PLANET_COLORS[i%Const.PLANET_COLORS.length]
+            );
         }
     }
 

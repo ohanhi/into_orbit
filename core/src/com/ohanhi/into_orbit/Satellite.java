@@ -26,7 +26,7 @@ public class Satellite extends Body {
         return Const.GRAVITATIONAL_CONSTANT * (m1*m2 / (r*r));
     }
 
-    private Color color;
+    private Color color = Const.HERO_COLOR;
     private double vx;
     private double vy;
     private float curX;
@@ -85,8 +85,9 @@ public class Satellite extends Body {
 
     public void drawToRenderer(ShapeRenderer renderer) {
         // draw path
-        for (float point[] : pathVertices) {
-            Color color = Const.PATH_COLORS ? Const.velocityToColor(point[2]) : Color.LIGHT_GRAY;
+        for (int i = 0; i < pathVertices.size(); i++) {
+            float point[] = pathVertices.get(i);
+            Color color = Const.pathVertexColor(point[2], i);
             renderer.setColor(color);
             renderer.circle(point[0], point[1], Const.PATH_RADIUS);
         }

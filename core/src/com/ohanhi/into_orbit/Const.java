@@ -13,9 +13,19 @@ public class Const {
     public static final double COLLISION_DISTANCE = 0.0d;
     public static final double TIME_SPEED = 8;
     public static final float PATH_RADIUS = 2f;
-    public static final float SATELLITE_VISUAL_RADIUS = 5f;
-    public static final boolean PATH_COLORS = true;
-    public static final int PATH_VERTEX_COUNT = 1000;
+    public static final float SATELLITE_RADIUS = 5f;
+    public static final boolean PATH_COLORS = false;
+    public static final int PATH_VERTEX_COUNT = 10;
+
+    public static final Color BG_COLOR = Color.valueOf("311b92ff");
+    public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
+    public static final Color GOAL_ACHIEVED_COLOR = new Color(1, 1, 1, 0.05f);
+    public static final Color HERO_COLOR = Color.valueOf("c6ff00ff");
+    public static final Color[] PLANET_COLORS = {
+            Color.valueOf("eeff41ff"),
+            Color.valueOf("64ffdaff"),
+            Color.valueOf("ff9100ff")
+    };
 
     public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
 
@@ -34,7 +44,8 @@ public class Const {
             case 3: return new Color(p, q, value, alpha);
             case 4: return new Color(t, p, value, alpha);
             case 5: return new Color(value, p, q, alpha);
-            default: throw new RuntimeException("Something went wrong when converting from HSV to RGB. Input was " + hue + ", " + saturation + ", " + value);
+            default: throw new RuntimeException("Something went wrong when converting from HSV to RGB."
+                    + " Input was " + hue + ", " + saturation + ", " + value + ", " + alpha);
         }
     }
 
@@ -43,8 +54,13 @@ public class Const {
         return hsvToRgb(hue, 1, 1, 1);
     }
 
-    public static Color velocityToColor(float v) {
-        float hue = Math.abs(1 - (v * 0.07f + 0.3f)) % 1;
-        return hsvToRgb(hue, 1, 1, 0.5f);
+    public static Color pathVertexColor(float v, int idx) {
+        float alpha = 1.0f * (PATH_VERTEX_COUNT - idx) / PATH_VERTEX_COUNT;
+        if (PATH_COLORS) {
+            float value = Math.abs(1 - (v * 0.07f + 0.3f)) % 1;
+            return hsvToRgb(value, 1, 1, alpha);
+        } else {
+            return hsvToRgb(0, 0, 0.8f, alpha);
+        }
     }
 }

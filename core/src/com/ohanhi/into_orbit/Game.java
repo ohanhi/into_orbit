@@ -111,16 +111,8 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
         gameTick++;
         final double delta = Gdx.graphics.getDeltaTime() * Const.TIME_SPEED;
-
-        // move satellite
-        if (satellite != null && !satellite.hasCollided()) {
-            satellite.move(delta, gameTick, 20);
-        }
 
         // tell the camera to update its matrices.
         camera.update();
@@ -130,8 +122,18 @@ public class Game extends ApplicationAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         // begin a new render and draw the objects
-        Gdx.gl.glClearColor(0.0f, 0.0f, 0.0f, 1);
+        Gdx.gl.glClearColor(
+                Const.BG_COLOR.r,
+                Const.BG_COLOR.g,
+                Const.BG_COLOR.b,
+                Const.BG_COLOR.a
+        );
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // set up alpha blending
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         for (int i = 0; i < goals.length; i++) {
             goals[i].drawToRenderer(shapeRenderer);
@@ -141,8 +143,9 @@ public class Game extends ApplicationAdapter {
             satellite.drawToRenderer(shapeRenderer);
         }
         if (touchDownX >= 0 && touchX >= 0) {
+            shapeRenderer.setColor(Const.HERO_COLOR);
+            shapeRenderer.circle(touchDownX, touchDownY, Const.SATELLITE_RADIUS * radiusK);
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle(touchDownX, touchDownY, Const.SATELLITE_VISUAL_RADIUS);
             shapeRenderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
         }
         shapeRenderer.end();
@@ -162,6 +165,17 @@ public class Game extends ApplicationAdapter {
             Gdx.input.setInputProcessor(stage);
         }
         stage.draw();
+
+        // move satellite for the next frame
+        if (satellite != null && !satellite.hasCollided()) {
+            satellite.move(delta, gameTick, 20);
+        }
+    }
+
+    public void restartLevel() {
+        for (Goal goal : goals) {
+            goal.reset();
+        }
     }
 
     private void launchSatellite(int x1, int y1, int x2, int y2) {
@@ -175,6 +189,7 @@ public class Game extends ApplicationAdapter {
     public void dispose() {
         // dispose of all the native resources
         shapeRenderer.dispose();
+        stage.dispose();
     }
 
     @Override
