@@ -1,0 +1,53 @@
+Deep Purple
+
+500 #673ab7
+800 #4527a0
+900 #311b92
+
+
+Teal
+
+A100 #a7ffeb
+A200 #64ffda
+A400 #1de9b6
+
+
+Light Green
+
+A100 #ccff90
+A200 #b2ff59
+A400 #76ff03
+A700 #64dd17
+
+
+Lime
+
+A100 #f4ff81
+A200 #eeff41
+A400 #c6ff00
+A700 #aeea00
+
+
+Orange
+
+A100 #ffd180
+A200 #ffab40
+A400 #ff9100
+A700 #ff6d00
+
+
+Blue Grey
+
+500 #607d8b
+50  #eceff1
+100 #cfd8dc
+200 #b0bec5
+300 #90a4ae
+400 #78909c
+500 #607d8b
+600 #546e7a
+700 #455a64
+800 #37474f
+900 #263238
+
+
