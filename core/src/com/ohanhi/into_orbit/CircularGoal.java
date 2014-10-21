@@ -45,7 +45,11 @@ public class CircularGoal extends Goal {
     }
 
     public void drawToRenderer(ShapeRenderer renderer) {
-        renderer.setColor(Color.LIGHT_GRAY);
-        renderer.circle(x, y, radius);
+        if (isAchieved()) {
+            renderer.setColor(Const.GOAL_ACHIEVED_COLOR);
+        } else {
+            renderer.setColor(Const.GOAL_COLOR);
+        }
+        renderer.circle(x, y, getRadius());
     }
 }

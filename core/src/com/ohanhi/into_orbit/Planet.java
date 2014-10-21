@@ -24,11 +24,15 @@ public class Planet extends Body {
     public Planet(float x, float y, float m) {
         super(x, y, m);
 
-        this.color = Color.CYAN;
+        this.color = Const.PLANET_COLORS[0];
     }
 
     public void setColor(float biggestMass) {
         this.color = Const.massToColor(getM(), biggestMass);
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
     }
 
     public void twinkle() {
