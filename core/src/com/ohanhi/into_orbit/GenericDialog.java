@@ -10,7 +10,7 @@ public class GenericDialog extends Dialog {
     private Game game;
 
     public GenericDialog(Game game, String title, String text, String confirmText, String cancelText) {
-        super(title, GameUtils.SKIN);
+        super(title, Const.SKIN);
 
         this.game = game;
 
@@ -20,7 +20,7 @@ public class GenericDialog extends Dialog {
     }
 
     public GenericDialog(Game game, String title, String text, String[] buttons) {
-        super(title, GameUtils.SKIN);
+        super(title, Const.SKIN);
 
         this.game = game;
         text(text);

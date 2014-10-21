@@ -115,7 +115,7 @@ public class Game extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         gameTick++;
-        final double delta = Gdx.graphics.getDeltaTime() * GameUtils.TIME_SPEED;
+        final double delta = Gdx.graphics.getDeltaTime() * Const.TIME_SPEED;
 
         // move satellite
         if (satellite != null && !satellite.hasCollided()) {
@@ -142,7 +142,7 @@ public class Game extends ApplicationAdapter {
         }
         if (touchDownX >= 0 && touchX >= 0) {
             shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.circle(touchDownX, touchDownY, GameUtils.SATELLITE_VISUAL_RADIUS);
+            shapeRenderer.circle(touchDownX, touchDownY, Const.SATELLITE_VISUAL_RADIUS);
             shapeRenderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
         }
         shapeRenderer.end();

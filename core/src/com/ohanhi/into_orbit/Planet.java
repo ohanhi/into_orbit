@@ -28,7 +28,7 @@ public class Planet extends Body {
     }
 
     public void setColor(float biggestMass) {
-        this.color = GameUtils.massToColor(getM(), biggestMass);
+        this.color = Const.massToColor(getM(), biggestMass);
     }
 
     public void twinkle() {

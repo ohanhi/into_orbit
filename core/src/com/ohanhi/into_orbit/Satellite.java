@@ -23,7 +23,7 @@ public class Satellite extends Body {
     }
 
     private static double gravitationalForce(float m1, float m2, double r) {
-        return GameUtils.GRAVITATIONAL_CONSTANT * (m1*m2 / (r*r));
+        return Const.GRAVITATIONAL_CONSTANT * (m1*m2 / (r*r));
     }
 
     private Color color;
@@ -48,13 +48,13 @@ public class Satellite extends Body {
         this.vy = vy;
         this.game = game;
         this.planets = game.planetSystem.getPlanets();
-        this.pathVertices = new ArrayList<float[]>(GameUtils.PATH_VERTEX_COUNT);
+        this.pathVertices = new ArrayList<float[]>(Const.PATH_VERTEX_COUNT);
         this.traveled = 0;
     }
 
     @Override
     public float getRadius() {
-        return GameUtils.SATELLITE_VISUAL_RADIUS;
+        return Const.SATELLITE_VISUAL_RADIUS;
     }
 
     @Override
@@ -86,9 +86,9 @@ public class Satellite extends Body {
     public void drawToRenderer(ShapeRenderer renderer) {
         // draw path
         for (float point[] : pathVertices) {
-            Color color = GameUtils.PATH_COLORS ? GameUtils.velocityToColor(point[2]) : Color.LIGHT_GRAY;
+            Color color = Const.PATH_COLORS ? Const.velocityToColor(point[2]) : Color.LIGHT_GRAY;
             renderer.setColor(color);
-            renderer.circle(point[0], point[1], GameUtils.PATH_RADIUS);
+            renderer.circle(point[0], point[1], Const.PATH_RADIUS);
         }
         // draw self
         if (!collided) {
@@ -98,7 +98,7 @@ public class Satellite extends Body {
     }
 
     private boolean checkCollision(float r, float radius1, float radius2) {
-        return r < ( radius1 + radius2 + 2*GameUtils.COLLISION_DISTANCE );
+        return r < ( radius1 + radius2 + 2* Const.COLLISION_DISTANCE );
     }
 
     private boolean isWithinBoundaries() {
@@ -165,7 +165,7 @@ public class Satellite extends Body {
 
                 // Add current position to pathVertices
                 if (i+1 == subsamples && gameTick % 2 == 0) {
-                    if (pathVertices.size() >= GameUtils.PATH_VERTEX_COUNT) {
+                    if (pathVertices.size() >= Const.PATH_VERTEX_COUNT) {
                         pathVertices.remove(pathVertices.size()-1);
                     }
                     float point[] = {curX, curY, v};
