@@ -9,21 +9,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
  * Created by ohan on 16.10.2014.
  */
 public class Const {
-    public static final double GRAVITATIONAL_CONSTANT = 8.0d;
+    public static final double GRAVITATIONAL_CONSTANT = 4.0d;
     public static final double COLLISION_DISTANCE = 0.0d;
     public static final double TIME_SPEED = 8;
     public static final float PATH_RADIUS = 2f;
     public static final float SATELLITE_RADIUS = 5f;
     public static final boolean PATH_COLORS = false;
-    public static final int PATH_VERTEX_COUNT = 10;
+    public static final int PATH_VERTEX_COUNT = 40;
 
     public static final Color BG_COLOR = Color.valueOf("311b92ff");
     public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
     public static final Color GOAL_ACHIEVED_COLOR = new Color(1, 1, 1, 0.05f);
-    public static final Color HERO_COLOR = Color.valueOf("c6ff00ff");
+    public static final Color HERO_COLOR = Color.valueOf("64ffdaff");
     public static final Color[] PLANET_COLORS = {
             Color.valueOf("eeff41ff"),
-            Color.valueOf("64ffdaff"),
+            Color.valueOf("c6ff00ff"),
             Color.valueOf("ff9100ff")
     };
 
