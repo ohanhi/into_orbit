@@ -118,7 +118,6 @@ public class Satellite extends Body {
 
             if (!isWithinBoundaries()) {
                 collided = true;
-                game.createLevelSelectDialog();
                 return false;
             }
 
@@ -158,7 +157,7 @@ public class Satellite extends Body {
 
                 if (collided) {
                     planet.twinkle();
-                    game.restartLevel();
+                    game.resetIfNotWon();
                     break;
                 }
 

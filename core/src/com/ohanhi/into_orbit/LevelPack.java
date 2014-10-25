@@ -34,14 +34,18 @@ public class LevelPack {
         };
     }
 
+    public int levelCount() {
+        return levelPlanets.length;
+    }
+
     public PlanetSystem getLevelPlanets(int levelNo) {
-        Planet[] planets = levelPlanets[levelNo - 1];
+        Planet[] planets = levelPlanets[levelNo];
 
         return new PlanetSystem(planets);
     }
 
     public Goal[] getLevelGoals(int levelNo) {
-        return levelGoals[levelNo - 1];
+        return levelGoals[levelNo];
     }
 
     public void dispose() {

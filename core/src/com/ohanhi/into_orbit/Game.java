@@ -32,10 +32,8 @@ public class Game extends ApplicationAdapter {
     private int touchDownY = -1;
     private int touchX = -1;
     private int touchY = -1;
+    private int currentLevel = 0;
     private LevelPack levelPack;
-
-    private GenericDialog dialog;
-    private Stage stage;
 
     // values that can be used elsewhere
     protected int screenWidth = 1280;
@@ -73,29 +71,25 @@ public class Game extends ApplicationAdapter {
         }
     };
 
-    /**
-     * Called when user taps a dialog button.
-     */
-    public void dialogInput(String title, String input) {
-        if (title.equals("Select level")) {
-            int n = Integer.parseInt(input, 10);
-            selectLevel(n);
+    private InputProcessor buttonInputProcessor = new InputAdapter() {
+        @Override
+        public boolean touchDown(int x, int y, int pointer, int button) {
+            nextLevel();
+            return true;
         }
-    }
+    };
 
-    public void createLevelSelectDialog() {
-        String buttons[] = { "1", "2", "3" };
-
-        dialog = new GenericDialog(this, "Select level", "", buttons);
-        stage = new Stage();
-        dialog.show(stage);
-
-        Gdx.input.setInputProcessor(stage);
+    public void nextLevel() {
+        // TODO: make this smarter
+        selectLevel( (currentLevel+1) % levelPack.levelCount() );
     }
 
     public void selectLevel(int n) {
+        currentLevel = n;
         planetSystem = levelPack.getLevelPlanets(n);
         goals = levelPack.getLevelGoals(n);
+        satellite = null;
+        resetLevel();
     }
 
     @Override
@@ -105,9 +99,7 @@ public class Game extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        camera = new OrthographicCamera();
-
-        createLevelSelectDialog();
+        camera = new OrthographicCamera();;
     }
 
     @Override
@@ -159,13 +151,16 @@ public class Game extends ApplicationAdapter {
             batch.end();
         }
 
-        // set the input processor based on whether there is a dialog open
-        if (stage.getActors().size < 1) {
-            Gdx.input.setInputProcessor(gameInputProcessor);
+        // set the input processor based on whether the level is won
+        if (checkWin()) {
+            batch.begin();
+            font.draw(batch, "Well done! Tap screen for next level >",
+                    screenWidth*0.5f - 120, screenHeight*0.4f);
+            batch.end();
+            Gdx.input.setInputProcessor(buttonInputProcessor);
         } else {
-            Gdx.input.setInputProcessor(stage);
+            Gdx.input.setInputProcessor(gameInputProcessor);
         }
-        stage.draw();
 
         // move satellite for the next frame
         if (satellite != null && !satellite.hasCollided()) {
@@ -173,14 +168,31 @@ public class Game extends ApplicationAdapter {
         }
     }
 
-    public void restartLevel() {
+    public Boolean checkWin() {
+        Boolean allDone = true;
+        for (Goal goal : goals) {
+            allDone = allDone && goal.isAchieved();
+        }
+
+        return allDone;
+    }
+
+    private void resetLevel() {
+        satellite = null;
         for (Goal goal : goals) {
             goal.reset();
         }
     }
 
+    public void resetIfNotWon() {
+        if (!checkWin()) {
+            resetLevel();
+        }
+    }
+
     private void launchSatellite(int x1, int y1, int x2, int y2) {
-        float k = 0.01f;
+        resetIfNotWon();
+        float k = 0.02f / radiusK;
         float vx = k * (x2 - x1);
         float vy = k * (y2 - y1);
         satellite = new Satellite(x1, y1, vx, vy, this);
@@ -190,7 +202,6 @@ public class Game extends ApplicationAdapter {
     public void dispose() {
         // dispose of all the native resources
         shapeRenderer.dispose();
-        stage.dispose();
     }
 
     @Override
@@ -206,8 +217,10 @@ public class Game extends ApplicationAdapter {
         }
         goals = new Goal[0];
         levelPack = new LevelPack(this);
-        planetSystem = levelPack.getLevelPlanets(3);
+        planetSystem = levelPack.getLevelPlanets(currentLevel);
         satellite = null;
+
+        selectLevel(currentLevel);
     }
 
     @Override
