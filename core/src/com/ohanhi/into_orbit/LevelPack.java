@@ -22,15 +22,30 @@ public class LevelPack {
                         new Planet(0.6f * w, 0.5f * h, 500, radiusK) },
                 { new Planet(0.3f * w, 0.3f * h, 200, radiusK),
                         new Planet(0.6f * w, 0.4f * h, 100, radiusK),
+                        new Planet(0.5f * w, 0.65f * h, 400, radiusK) },
+
+                { new Planet(0.5f * w, 0.5f * h, 1000, radiusK) },
+                { new Planet(0.4f * w, 0.5f * h, 500, radiusK),
+                        new Planet(0.6f * w, 0.5f * h, 500, radiusK) },
+                { new Planet(0.3f * w, 0.3f * h, 200, radiusK),
+                        new Planet(0.6f * w, 0.4f * h, 100, radiusK),
                         new Planet(0.5f * w, 0.65f * h, 400, radiusK) }
         };
         this.levelGoals = new Goal[][] {
-                { new CircularGoal(0.4f * w, 0.5f * h, 30, 1, radiusK),
-                        new CircularGoal(0.6f * w, 0.5f * h, 30, 1, radiusK) },
+                { new CircularGoal(0.5f * w, 0.3f * h, 30, 1, radiusK),
+                        new CircularGoal(0.5f * w, 0.7f * h, 30, 1, radiusK) },
                 { new CircularGoal(0.5f * w, 0.2f * h, 30, 1, radiusK),
                         new CircularGoal(0.5f * w, 0.8f * h, 30, 1, radiusK) },
                 { new CircularGoal(0.3f * w, 0.3f * h, 60, 1, radiusK),
                         new CircularGoal(0.5f * w, 0.65f * h, 100, 1, radiusK) },
+
+                { new CircularGoal(0.5f * w, 0.2f * h, 30, 1, radiusK),
+                        new CircularGoal(0.5f * w, 0.8f * h, 30, 1, radiusK) },
+                { new CircularGoal(0.3f * w, 0.5f * h, 30, 1, radiusK),
+                        new CircularGoal(0.7f * w, 0.5f * h, 30, 1, radiusK) },
+                { new CircularGoal(0.3f * w, 0.3f * h, 60, 1, radiusK),
+                        new CircularGoal(0.6f * w, 0.4f * h, 40, 1, radiusK),
+                        new CircularGoal(0.5f * w, 0.65f * h, 100, 1, radiusK)},
         };
     }
 
