@@ -99,7 +99,7 @@ public class Game extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         font = new BitmapFont();
-        camera = new OrthographicCamera();;
+        camera = new OrthographicCamera();
     }
 
     @Override
@@ -115,23 +115,21 @@ public class Game extends ApplicationAdapter {
         shapeRenderer.setProjectionMatrix(camera.combined);
 
         // begin a new render and draw the objects
-        Gdx.gl.glClearColor(
-                Const.BG_COLOR.r,
-                Const.BG_COLOR.g,
-                Const.BG_COLOR.b,
-                Const.BG_COLOR.a
-        );
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
 
         // set up alpha blending
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(0,0, screenWidth, screenHeight,
+                Const.BG_COLOR, Const.BG_COLOR, Const.BG_COLOR_2, Const.BG_COLOR_2);
+
         for (int i = 0; i < goals.length; i++) {
             goals[i].drawToRenderer(shapeRenderer);
         }
-        planetSystem.drawToRenderer(shapeRenderer);
         if (satellite != null) {
             satellite.drawToRenderer(shapeRenderer);
         }
@@ -143,24 +141,27 @@ public class Game extends ApplicationAdapter {
         }
         shapeRenderer.end();
 
+        batch.begin();
+        // draw planets
+        planetSystem.drawToBatch(batch);
+        batch.end();
+
+        batch.begin();
         if (satellite != null && satellite.hasCollided()) {
             String text = "Traveled " + satellite.getTraveledRound()
                     + " with max velocity of " + satellite.getMaxVelocityRound();
-            batch.begin();
             font.draw(batch, text, 30, 30);
-            batch.end();
         }
 
         // set the input processor based on whether the level is won
         if (checkWin()) {
-            batch.begin();
             font.draw(batch, "Well done! Tap screen for next level >",
                     screenWidth*0.5f - 120, screenHeight*0.4f);
-            batch.end();
             Gdx.input.setInputProcessor(buttonInputProcessor);
         } else {
             Gdx.input.setInputProcessor(gameInputProcessor);
         }
+        batch.end();
 
         // move satellite for the next frame
         if (satellite != null && !satellite.hasCollided()) {
@@ -178,7 +179,6 @@ public class Game extends ApplicationAdapter {
     }
 
     private void resetLevel() {
-        satellite = null;
         for (Goal goal : goals) {
             goal.reset();
         }

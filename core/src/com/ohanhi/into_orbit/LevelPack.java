@@ -17,19 +17,19 @@ public class LevelPack {
         this.h = game.screenHeight;
         float radiusK = game.radiusK;
         this.levelPlanets = new Planet[][] {
-                { new Planet(0.5f * w, 0.5f * h, 1000, radiusK) },
-                { new Planet(0.4f * w, 0.5f * h, 500, radiusK),
-                        new Planet(0.6f * w, 0.5f * h, 500, radiusK) },
-                { new Planet(0.3f * w, 0.3f * h, 200, radiusK),
-                        new Planet(0.6f * w, 0.4f * h, 100, radiusK),
-                        new Planet(0.5f * w, 0.65f * h, 400, radiusK) },
+                { new Planet(0.5f * w, 0.5f * h, 1000, game) },
+                { new Planet(0.4f * w, 0.5f * h, 500, game),
+                        new Planet(0.6f * w, 0.5f * h, 500, game) },
+                { new Planet(0.3f * w, 0.3f * h, 200, game),
+                        new Planet(0.6f * w, 0.4f * h, 100, game),
+                        new Planet(0.5f * w, 0.65f * h, 400, game) },
 
-                { new Planet(0.5f * w, 0.5f * h, 1000, radiusK) },
-                { new Planet(0.4f * w, 0.5f * h, 500, radiusK),
-                        new Planet(0.6f * w, 0.5f * h, 500, radiusK) },
-                { new Planet(0.3f * w, 0.3f * h, 200, radiusK),
-                        new Planet(0.6f * w, 0.4f * h, 100, radiusK),
-                        new Planet(0.5f * w, 0.65f * h, 400, radiusK) }
+                { new Planet(0.5f * w, 0.5f * h, 1000, game) },
+                { new Planet(0.4f * w, 0.5f * h, 500, game),
+                        new Planet(0.6f * w, 0.5f * h, 500, game) },
+                { new Planet(0.3f * w, 0.3f * h, 200, game),
+                        new Planet(0.6f * w, 0.4f * h, 100, game),
+                        new Planet(0.5f * w, 0.65f * h, 400, game) }
         };
         this.levelGoals = new Goal[][] {
                 { new CircularGoal(0.5f * w, 0.3f * h, 30, 1, radiusK),
