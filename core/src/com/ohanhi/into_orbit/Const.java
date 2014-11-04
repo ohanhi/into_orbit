@@ -57,6 +57,20 @@ public class Const {
         }
     }
 
+    private static float blend(float v1, float v2, float ratio) {
+        return v1 * ratio + v2 * (1-ratio);
+    }
+
+    public static Color blendColor(Color c1, Color c2, float ratio) {
+
+        return new Color(
+                blend(c1.r, c2.r, ratio),
+                blend(c1.g, c2.g, ratio),
+                blend(c1.b, c2.b, ratio),
+                blend(c1.a, c2.a, ratio)
+        );
+    }
+
     public static Color massToColor(float m, float biggestMass) {
         float hue = (float)(Math.atan(m / biggestMass) * 0.06 + 0.12) % 1;
         return hsvToRgb(hue, 1, 1, 1);
