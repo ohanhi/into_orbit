@@ -118,6 +118,7 @@ public class Satellite extends Body {
 
             if (!isWithinBoundaries()) {
                 collided = true;
+                game.resetIfNotWon();
                 return false;
             }
 
