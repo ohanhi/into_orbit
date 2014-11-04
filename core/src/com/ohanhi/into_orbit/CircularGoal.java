@@ -1,6 +1,8 @@
 package com.ohanhi.into_orbit;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
@@ -46,7 +48,9 @@ public class CircularGoal extends Goal {
 
     public void addContact() {
         contacts++;
+
         if (contacts >= contactGoal) this.achieve();
+        if (!isAchieved()) animationFrames = animationLength;
     }
 
     @Override
@@ -56,17 +60,43 @@ public class CircularGoal extends Goal {
         animationFrames = 0;
     }
 
+    public float getDrawRadius() {
+        return getRadius() + animationFrames;
+    }
+
+    public int contactsRemaining() {
+        if (isAchieved()) return 0;
+        return contactGoal - contacts;
+    }
+
+    public void renderNumber(SpriteBatch batch, BitmapFont font, int screenHeight) {
+        if (contactsRemaining() > 1) {
+            String text = "+" + (contactsRemaining()-1);
+            font.setScale(0.5f);
+            BitmapFont.TextBounds bounds = font.getBounds(text);
+            float x = getX() - bounds.width / 2;
+            float y = getY() - bounds.height / 2;
+            y = screenHeight - y;
+            font.setColor(Const.GOAL_FONT_COLOR);
+            font.draw(batch, text, x, y);
+            font.setScale(1);
+        }
+    }
+
     public void drawToRenderer(ShapeRenderer renderer) {
         if (isAchieved()) {
-            Color c = new Color(Const.GOAL_ACHIEVED_COLOR)
-                    .mul(1 + 1.0f*animationFrames/animationLength);
+            float ratio = 1.0f*animationFrames/animationLength;
+            Color c = Const.blendColor(Const.GOAL_COLOR, Const.GOAL_ACHIEVED_COLOR, ratio);
+
             renderer.setColor(c);
-            if (animationFrames > 0) {
-                animationFrames--;
-            }
         } else {
             renderer.setColor(Const.GOAL_COLOR);
         }
-        renderer.circle(x, y, getRadius());
+        renderer.circle(x, y, getDrawRadius());
+
+        if (animationFrames > 0) {
+            animationFrames--;
+        }
     }
+
 }

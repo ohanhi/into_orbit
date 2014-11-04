@@ -146,13 +146,27 @@ public class Game extends ApplicationAdapter {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(0,0, screenWidth, screenHeight,
                 Const.BG_COLOR, Const.BG_COLOR, Const.BG_COLOR_2, Const.BG_COLOR_2);
-        shapeRenderer.end();
 
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        // draw goal circles
         for (Goal goal : goals) {
             goal.drawToRenderer(shapeRenderer);
         }
+        shapeRenderer.end();
+
+        batch.begin();
+        // draw goal numbers
+        for (Goal _goal : goals) {
+            CircularGoal goal = (CircularGoal)_goal;
+            goal.renderNumber(batch, font, screenHeight);
+        }
+        batch.end();
+
+        // set up alpha blending
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // draw satellite / launch
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (satellite != null) {
             satellite.drawToRenderer(shapeRenderer);
         }
@@ -164,6 +178,7 @@ public class Game extends ApplicationAdapter {
         batch.begin();
         // draw planets
         planetSystem.drawToBatch(batch);
+
 
         if (won) renderText("Nice! Tap to continue.", 1);
         batch.end();
@@ -186,7 +201,7 @@ public class Game extends ApplicationAdapter {
             // set up alpha blending
             Gdx.gl.glEnable(GL20.GL_BLEND);
             Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-            
+
             drawLevelAnimationFrame();
             batch.end();
             levelAnimationFrames--;
