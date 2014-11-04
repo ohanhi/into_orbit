@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -33,6 +33,7 @@ public class Game extends ApplicationAdapter {
     private int touchX = -1;
     private int touchY = -1;
     private int currentLevel = 0;
+    private int levelAnimationFrames = 0;
     private LevelPack levelPack;
 
     // values that can be used elsewhere
@@ -81,7 +82,8 @@ public class Game extends ApplicationAdapter {
 
     public void nextLevel() {
         // TODO: make this smarter
-        selectLevel( (currentLevel+1) % levelPack.levelCount() );
+        int lvl = (currentLevel+1) % levelPack.levelCount();
+        selectLevel(lvl);
     }
 
     public void selectLevel(int n) {
@@ -90,6 +92,16 @@ public class Game extends ApplicationAdapter {
         goals = levelPack.getLevelGoals(n);
         satellite = null;
         resetLevel();
+        showLevelAnimation();
+    }
+
+    private void showLevelAnimation() {
+        levelAnimationFrames = 60;
+    }
+
+    private void drawLevelAnimationFrame() {
+        float alpha = (float)Math.cos((levelAnimationFrames / (60 * 2)) * Math.PI);
+        renderText("Level " + (currentLevel+1), alpha);
     }
 
     @Override
@@ -98,14 +110,22 @@ public class Game extends ApplicationAdapter {
 
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        TextureRegion region = null;
+        font = new BitmapFont(
+                new BitmapFont.BitmapFontData(Gdx.files.internal("open-sans.fnt"), false),
+                region,
+                false
+        );
         camera = new OrthographicCamera();
     }
+
+
 
     @Override
     public void render() {
         gameTick++;
         final double delta = Gdx.graphics.getDeltaTime() * Const.TIME_SPEED;
+        final boolean won = checkWin();
 
         // tell the camera to update its matrices.
         camera.update();
@@ -114,59 +134,83 @@ public class Game extends ApplicationAdapter {
         // coordinate system specified by the camera.
         shapeRenderer.setProjectionMatrix(camera.combined);
 
-        // begin a new render and draw the objects
+        // begin a new render
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
 
         // set up alpha blending
         Gdx.gl.glEnable(GL20.GL_BLEND);
         Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // draw background gradient
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(0,0, screenWidth, screenHeight,
                 Const.BG_COLOR, Const.BG_COLOR, Const.BG_COLOR_2, Const.BG_COLOR_2);
+        shapeRenderer.end();
 
-        for (int i = 0; i < goals.length; i++) {
-            goals[i].drawToRenderer(shapeRenderer);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (Goal goal : goals) {
+            goal.drawToRenderer(shapeRenderer);
         }
         if (satellite != null) {
             satellite.drawToRenderer(shapeRenderer);
         }
-        if (touchDownX >= 0 && touchX >= 0) {
-            shapeRenderer.setColor(Const.HERO_COLOR);
-            shapeRenderer.circle(touchDownX, touchDownY, Const.SATELLITE_RADIUS * radiusK);
-            shapeRenderer.setColor(Color.WHITE);
-            shapeRenderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
+        if (touchX >= 0) {
+            drawLaunch(shapeRenderer);
         }
         shapeRenderer.end();
 
         batch.begin();
         // draw planets
         planetSystem.drawToBatch(batch);
+
+        if (won) renderText("Nice! Tap to continue.", 1);
         batch.end();
 
-        batch.begin();
-        if (satellite != null && satellite.hasCollided()) {
-            String text = "Traveled " + satellite.getTraveledRound()
-                    + " with max velocity of " + satellite.getMaxVelocityRound();
-            font.draw(batch, text, 30, 30);
-        }
-
         // set the input processor based on whether the level is won
-        if (checkWin()) {
-            font.draw(batch, "Well done! Tap screen for next level >",
-                    screenWidth*0.5f - 120, screenHeight*0.4f);
+        if (won) {
             Gdx.input.setInputProcessor(buttonInputProcessor);
         } else {
             Gdx.input.setInputProcessor(gameInputProcessor);
         }
-        batch.end();
 
         // move satellite for the next frame
         if (satellite != null && !satellite.hasCollided()) {
             satellite.move(delta, gameTick, 20);
         }
+
+        if (levelAnimationFrames > 0) {
+            Gdx.input.setInputProcessor(null);
+            batch.begin();
+            // set up alpha blending
+            Gdx.gl.glEnable(GL20.GL_BLEND);
+            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+            
+            drawLevelAnimationFrame();
+            batch.end();
+            levelAnimationFrames--;
+        }
+    }
+
+    private void drawLaunch(ShapeRenderer renderer) {
+        renderer.setColor(Const.HERO_COLOR);
+        renderer.circle(touchDownX, touchDownY, Const.SATELLITE_RADIUS * radiusK);
+        renderer.setColor(Color.WHITE);
+        renderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
+    }
+
+    private void renderText(String text) {
+        BitmapFont.TextBounds bounds = font.getBounds(text);
+        float x = screenWidth / 2 - bounds.width / 2;
+        float y = 2 * screenHeight / 3 + bounds.height / 2;
+
+        font.draw(batch, text, x, y);
+    }
+
+    private void renderText(String text, float alpha) {
+        font.setColor(1,1,1, alpha);
+        renderText(text);
     }
 
     public Boolean checkWin() {
@@ -182,6 +226,7 @@ public class Game extends ApplicationAdapter {
         for (Goal goal : goals) {
             goal.reset();
         }
+        satellite = null;
     }
 
     public void resetIfNotWon() {
@@ -202,6 +247,7 @@ public class Game extends ApplicationAdapter {
     public void dispose() {
         // dispose of all the native resources
         shapeRenderer.dispose();
+        batch.dispose();
     }
 
     @Override
@@ -225,9 +271,13 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void pause() {
+        // ???
+        this.dispose();
     }
 
     @Override
     public void resume() {
+        shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
     }
 }
