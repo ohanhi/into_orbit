@@ -58,11 +58,11 @@ public class LevelPack {
                 { new CircularGoal(0.3f * w, 0.5f * h, 30, 1, radiusK),
                         new CircularGoal(0.5f * w, 0.5f * h, 30, 1, radiusK),
                         new CircularGoal(0.7f * w, 0.5f * h, 30, 1, radiusK) }, // 7
+                { new CircularGoal(0.5f * w, 0.2f * h, 30, 2, radiusK),
+                        new CircularGoal(0.5f * w, 0.5f * h, 30, 4, radiusK),
+                        new CircularGoal(0.5f * w, 0.8f * h, 30, 2, radiusK) }, // 8
                 { new CircularGoal(0.5f * w, 0.2f * h, 30, 1, radiusK),
-                        new CircularGoal(0.5f * w, 0.5f * h, 30, 1, radiusK),
-                        new CircularGoal(0.5f * w, 0.8f * h, 30, 1, radiusK) }, // 8
-                { new CircularGoal(0.5f * w, 0.2f * h, 30, 1, radiusK),
-                        new CircularGoal(0.5f * w, 0.5f * h, 30, 1, radiusK),
+                        new CircularGoal(0.5f * w, 0.5f * h, 30, 5, radiusK),
                         new CircularGoal(0.5f * w, 0.8f * h, 30, 1, radiusK),
                         new CircularGoal(0.3f * w, 0.5f * h, 30, 1, radiusK),
                         new CircularGoal(0.7f * w, 0.5f * h, 30, 1, radiusK) }, // 9
