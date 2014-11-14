@@ -74,4 +74,8 @@ public class Planet extends Body {
         if (animationFrames > 0) animationFrames--;
     }
 
+    public void dispose() {
+        texture.dispose();
+    }
+
 }

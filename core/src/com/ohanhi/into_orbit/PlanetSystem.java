@@ -1,5 +1,6 @@
 package com.ohanhi.into_orbit;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -31,7 +32,7 @@ public class PlanetSystem {
     private void setPlanetTextures() {
         for (int i = 0; i < planets.length; i++) {
             planets[i].setTexture(
-                    Const.PLANET_TEXTURES[i % Const.PLANET_TEXTURES.length]
+                new Texture(Const.PLANET_TEXTURE_FILES[i % Const.PLANET_TEXTURE_FILES.length])
             );
         }
     }
@@ -50,6 +51,16 @@ public class PlanetSystem {
         for (int i = 0; i < planets.length; i++) {
             planets[i].drawToBatch(batch);
         }
+    }
+
+    public void dispose() {
+        for (Planet planet : planets) {
+            planet.dispose();
+        }
+    }
+
+    public void resume() {
+        setPlanetTextures();
     }
 
 }

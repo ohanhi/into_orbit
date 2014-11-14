@@ -1,10 +1,8 @@
 package com.ohanhi.into_orbit;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
@@ -32,10 +30,10 @@ public class Const {
     };
 
     public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
-    public static final Texture[] PLANET_TEXTURES = {
-            new Texture(Gdx.files.internal("planet-1.png")),
-            new Texture(Gdx.files.internal("planet-2.png")),
-            new Texture(Gdx.files.internal("planet-3.png"))
+    public static final FileHandle[] PLANET_TEXTURE_FILES = {
+            Gdx.files.internal("planet-1.png"),
+            Gdx.files.internal("planet-2.png"),
+            Gdx.files.internal("planet-3.png")
     };
 
     public static Color hsvToRgb(float hue, float saturation, float value, float alpha) {

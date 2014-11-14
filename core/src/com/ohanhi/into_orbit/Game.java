@@ -87,12 +87,13 @@ public class Game extends ApplicationAdapter {
     }
 
     public void selectLevel(int n) {
-        currentLevel = n;
+        if (planetSystem != null) planetSystem.dispose();
         planetSystem = levelPack.getLevelPlanets(n);
         goals = levelPack.getLevelGoals(n);
         satellite = null;
         resetLevel();
         showLevelAnimation();
+        currentLevel = n;
     }
 
     private void showLevelAnimation() {
@@ -104,19 +105,22 @@ public class Game extends ApplicationAdapter {
         renderText("Level " + (currentLevel+1), alpha);
     }
 
+    private void init() {
+        shapeRenderer = new ShapeRenderer();
+        batch = new SpriteBatch();
+        font = new BitmapFont(
+                new BitmapFont.BitmapFontData(Gdx.files.internal("open-sans.fnt"), false),
+                (TextureRegion)null,
+                false
+        );
+        camera = new OrthographicCamera();
+    }
+
     @Override
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor);
 
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
-        TextureRegion region = null;
-        font = new BitmapFont(
-                new BitmapFont.BitmapFontData(Gdx.files.internal("open-sans.fnt"), false),
-                region,
-                false
-        );
-        camera = new OrthographicCamera();
+        init();
     }
 
 
@@ -261,8 +265,11 @@ public class Game extends ApplicationAdapter {
     @Override
     public void dispose() {
         // dispose of all the native resources
+        planetSystem.dispose();
+        levelPack.dispose();
         shapeRenderer.dispose();
         batch.dispose();
+        font.dispose();
     }
 
     @Override
@@ -287,12 +294,12 @@ public class Game extends ApplicationAdapter {
     @Override
     public void pause() {
         // ???
-        this.dispose();
     }
 
     @Override
     public void resume() {
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
+        init();
+        levelPack = new LevelPack(this);
+        selectLevel(currentLevel);
     }
 }
