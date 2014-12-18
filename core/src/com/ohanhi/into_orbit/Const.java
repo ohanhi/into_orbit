@@ -24,7 +24,7 @@ public class Const {
     public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
     public static final Color GOAL_FONT_COLOR = new Color(1, 1, 1, 0.4f);
     public static final Color GOAL_ACHIEVED_COLOR = new Color(1, 1, 1, 0.02f);
-    public static final Color HERO_COLOR = Color.valueOf("64ffdaff");
+    public static final Color HERO_COLOR = Color.valueOf("ffffffcc");
     public static final Color[] PLANET_COLORS = {
             Color.valueOf("eeff41ff"),
             Color.valueOf("c6ff00ff"),
