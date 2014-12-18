@@ -98,6 +98,24 @@ public class Satellite extends Body {
         }
     }
 
+    private void drawTriangle(ShapeRenderer renderer, float[] lastPoint) {
+        float x = getX(), y = getY();
+        double direction = -Math.toDegrees(Math.atan2(x-lastPoint[0], y-lastPoint[1]));
+        renderer.identity();
+        renderer.translate(x, y, 0);
+        renderer.rotate(0, 0, 1, (float) direction);
+
+        renderer.setColor(color);
+        renderer.triangle(
+                -8, 0,
+                8, 0,
+                0, 20
+        );
+        renderer.end();
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.identity();
+    }
+
     private boolean checkCollision(float r, float radius1, float radius2) {
         return r < ( radius1 + radius2 + 2* Const.COLLISION_DISTANCE );
     }
