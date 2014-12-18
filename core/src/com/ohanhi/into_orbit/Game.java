@@ -128,7 +128,11 @@ public class Game extends ApplicationAdapter {
         init();
     }
 
-
+    private void setUpAlphaBlending() {
+        // set up alpha blending
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+    }
 
     @Override
     public void render() {
@@ -147,9 +151,7 @@ public class Game extends ApplicationAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // set up alpha blending
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        setUpAlphaBlending();
 
         // draw background gradient
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -207,10 +209,7 @@ public class Game extends ApplicationAdapter {
         if (levelAnimationFrames > 0) {
             Gdx.input.setInputProcessor(null);
             batch.begin();
-            // set up alpha blending
-            Gdx.gl.glEnable(GL20.GL_BLEND);
-            Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
+            setUpAlphaBlending();
             drawLevelAnimationFrame();
             batch.end();
             levelAnimationFrames--;
@@ -218,6 +217,7 @@ public class Game extends ApplicationAdapter {
     }
 
     private void drawLaunch(ShapeRenderer renderer) {
+        setUpAlphaBlending();
         renderer.setColor(Const.HERO_COLOR);
         renderer.circle(touchDownX, touchDownY, Const.SATELLITE_RADIUS * radiusK);
         renderer.setColor(Color.WHITE);
