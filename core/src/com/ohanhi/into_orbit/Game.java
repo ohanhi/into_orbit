@@ -35,6 +35,7 @@ public class Game extends ApplicationAdapter {
     private int currentLevel = 0;
     private int levelAnimationFrames = 0;
     private LevelPack levelPack;
+    private SaveManager saveManager;
 
     // values that can be used elsewhere
     protected int screenWidth = 1280;
@@ -94,6 +95,7 @@ public class Game extends ApplicationAdapter {
         resetLevel();
         showLevelAnimation();
         currentLevel = n;
+        saveManager.saveDataValue(Const.SAVE_LEVEL, n);
     }
 
     private void showLevelAnimation() {
@@ -106,6 +108,9 @@ public class Game extends ApplicationAdapter {
     }
 
     private void init() {
+        saveManager = new SaveManager(true);
+        Integer level = saveManager.loadDataValue(Const.SAVE_LEVEL, Integer.class);
+        if (level != null) currentLevel = level.intValue();
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
         font = new BitmapFont(

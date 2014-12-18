@@ -17,6 +17,8 @@ public class Const {
     public static final boolean PATH_COLORS = false;
     public static final int PATH_VERTEX_COUNT = 40;
 
+    public static final String SAVE_LEVEL = "level";
+
     public static final Color BG_COLOR = Color.valueOf("673ab7ff");
     public static final Color BG_COLOR_2 = Color.valueOf("311b92ff");
     public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
@@ -35,6 +37,7 @@ public class Const {
             Gdx.files.internal("planet-2.png"),
             Gdx.files.internal("planet-3.png")
     };
+    public static final FileHandle SAVE_FILE = Gdx.files.local("save.json");
 
     public static Color hsvToRgb(float hue, float saturation, float value, float alpha) {
 
