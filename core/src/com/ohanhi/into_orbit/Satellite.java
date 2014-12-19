@@ -121,11 +121,10 @@ public class Satellite extends Body {
     }
 
     private boolean isWithinBoundaries() {
-        float threshold = 20;
-        return ( curX > -1 * threshold
-                && curX < game.screenWidth + threshold
-                && curY > -1 * threshold
-                && curY < game.screenHeight + threshold );
+        return ( curX > -1 * Const.SCREEN_BORDER_THRESHOLD
+                && curX < game.screenWidth + Const.SCREEN_BORDER_THRESHOLD
+                && curY > -1 * Const.SCREEN_BORDER_THRESHOLD
+                && curY < game.screenHeight + Const.SCREEN_BORDER_THRESHOLD );
     }
 
     public boolean move(double dt, long gameTick, int subsamples) {

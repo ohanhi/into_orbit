@@ -16,6 +16,7 @@ public class Const {
     public static final float SATELLITE_RADIUS = 3f;
     public static final boolean PATH_COLORS = false;
     public static final int PATH_VERTEX_COUNT = 40;
+    public static final int SCREEN_BORDER_THRESHOLD = 2000;
 
     public static final String SAVE_LEVEL = "level";
 
