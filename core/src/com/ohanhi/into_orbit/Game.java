@@ -145,7 +145,10 @@ public class Game extends ApplicationAdapter {
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
+        camera.setToOrtho(true);
         shapeRenderer.setProjectionMatrix(camera.combined);
+        camera.setToOrtho(false);
+        batch.setProjectionMatrix(camera.combined);
 
         // begin a new render
         Gdx.gl.glClearColor(0,0,0,1);
