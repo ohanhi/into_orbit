@@ -57,6 +57,7 @@ public class PlanetSystem {
         for (Planet planet : planets) {
             planet.dispose();
         }
+        planets = null;
     }
 
     public void resume() {

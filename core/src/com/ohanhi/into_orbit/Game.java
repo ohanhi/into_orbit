@@ -269,11 +269,26 @@ public class Game extends ApplicationAdapter {
     @Override
     public void dispose() {
         // dispose of all the native resources
-        planetSystem.dispose();
-        levelPack.dispose();
-        shapeRenderer.dispose();
-        batch.dispose();
-        font.dispose();
+        if (planetSystem != null) {
+            planetSystem.dispose();
+            planetSystem = null;
+        }
+        if (levelPack != null) {
+            levelPack.dispose();
+            levelPack = null;
+        }
+        if (shapeRenderer != null) {
+            shapeRenderer.dispose();
+            shapeRenderer = null;
+        }
+        if (batch != null) {
+            batch.dispose();
+            batch = null;
+        }
+        if (font != null) {
+            font.dispose();
+            font = null;
+        }
     }
 
     @Override
@@ -297,11 +312,12 @@ public class Game extends ApplicationAdapter {
 
     @Override
     public void pause() {
-        // ???
+        dispose();
     }
 
     @Override
     public void resume() {
+        dispose();
         init();
         levelPack = new LevelPack(this);
         selectLevel(currentLevel);
