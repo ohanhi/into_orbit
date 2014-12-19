@@ -40,7 +40,7 @@ public class Game extends ApplicationAdapter {
     // values that can be used elsewhere
     protected int screenWidth = 1280;
     protected int screenHeight = 800;
-    protected float radiusK = 1;
+    protected float radiusK = 1.2f;
     protected long gameTick = 0L;
     protected PlanetSystem planetSystem;
     protected Goal[] goals;
@@ -172,9 +172,7 @@ public class Game extends ApplicationAdapter {
         }
         batch.end();
 
-        // set up alpha blending
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        setUpAlphaBlending();
 
         // draw satellite / launch
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -188,6 +186,7 @@ public class Game extends ApplicationAdapter {
 
         batch.begin();
         // draw planets
+        setUpAlphaBlending();
         planetSystem.drawToBatch(batch);
 
 
