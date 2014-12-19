@@ -14,8 +14,8 @@
    height="64px"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
-   sodipodi:docname="planet-1.svg">
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="planet-2.svg">
   <defs
      id="defs2987">
     <linearGradient
@@ -48,11 +48,19 @@
     <linearGradient
        id="linearGradient3806">
       <stop
-         style="stop-color:#000000;stop-opacity:1;"
+         style="stop-color:#1de9b7;stop-opacity:1;"
          offset="0"
          id="stop3808" />
       <stop
-         style="stop-color:#000000;stop-opacity:0;"
+         id="stop3828"
+         offset="0.50076067"
+         style="stop-color:#1de9b7;stop-opacity:0.49803922;" />
+      <stop
+         style="stop-color:#1de9b7;stop-opacity:0;"
+         offset="0.90463966"
+         id="stop3830" />
+      <stop
+         style="stop-color:#1de9b7;stop-opacity:0;"
          offset="1"
          id="stop3810" />
     </linearGradient>
@@ -64,7 +72,8 @@
        y1="68.955948"
        x2="49.595684"
        y2="14.142797"
-       gradientUnits="userSpaceOnUse" />
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.5116279,0,0,0.5050215,18.790698,13.107604)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient5261"
@@ -73,6 +82,16 @@
        y1="64.096626"
        x2="63.368805"
        y2="4.3326454"
+       gradientUnits="userSpaceOnUse" />
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3806"
+       id="radialGradient3788"
+       cx="32"
+       cy="32"
+       fx="32"
+       fy="32"
+       r="32"
        gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
@@ -83,17 +102,17 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11"
-     inkscape:cx="18.227273"
-     inkscape:cy="29.447152"
+     inkscape:cx="31.181818"
+     inkscape:cy="32.703198"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1918"
-     inkscape:window-height="1013"
-     inkscape:window-x="0"
-     inkscape:window-y="27"
-     inkscape:window-maximized="1" />
+     inkscape:window-width="1255"
+     inkscape:window-height="906"
+     inkscape:window-x="554"
+     inkscape:window-y="129"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata2990">
     <rdf:RDF>
@@ -102,7 +121,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -110,6 +129,16 @@
      id="layer1"
      inkscape:label="Layer 1"
      inkscape:groupmode="layer">
+    <rect
+       style="fill:url(#radialGradient3788);fill-opacity:1;opacity:0.4"
+       id="rect3004"
+       width="64"
+       height="64"
+       x="0"
+       y="3.5527137e-15"
+       inkscape:export-filename="/home/ohan/dev/into_orbit/android/assets/planet-2.png"
+       inkscape:export-xdpi="360"
+       inkscape:export-ydpi="360" />
     <path
        sodipodi:type="arc"
        style="fill:url(#linearGradient5267);fill-opacity:1;stroke:none"
@@ -119,11 +148,10 @@
        sodipodi:rx="30.181818"
        sodipodi:ry="30.181818"
        d="M 63.454546,34 A 30.181818,30.181818 0 1 1 3.09091,34 30.181818,30.181818 0 1 1 63.454546,34 z"
-       transform="matrix(1.060241,0,0,1.060241,-3.2771094,-4.048193)" />
+       transform="matrix(0.5301205,0,0,0.5301205,14.361446,13.975904)" />
     <path
-       transform="matrix(1.0232558,0,0,1.010043,5.5813958,-5.7847927)"
        style="fill:url(#linearGradient5259);fill-opacity:1;stroke:none"
-       d="m 30.082645,55.680142 c 2.754132,6.678571 23.507946,-1.601903 17.848695,4.131378 -5.659251,5.733282 -13.477433,9.27939 -22.113158,9.27939 -17.2714507,0 -31.272728,-14.184433 -31.272728,-31.681818 0,-8.748692 3.5003193,-16.669147 9.15957,-22.402428 5.6592506,-5.7332818 -2.5143031,12.861882 2.8342314,15.562037 5.3485346,2.700155 2.8420952,12.408516 7.3652246,18.639927 4.523129,6.231411 13.424033,-0.207057 16.178165,6.471514 z"
+       d="m 34.181819,41.227273 c 1.409091,3.372822 12.027321,-0.808995 9.13189,2.086435 -2.895431,2.89543 -6.895431,4.686291 -11.313708,4.686291 C 23.163445,47.999999 16,40.836556 16,32 c 0,-4.418278 1.790861,-8.418278 4.686292,-11.313708 2.895431,-2.89543 -1.286388,6.495527 1.450072,7.859163 2.736459,1.363637 1.454095,6.266568 3.768254,9.413564 2.314159,3.146997 6.86811,-0.104568 8.277201,3.268254 z"
        id="path3803"
        inkscape:connector-curvature="0"
        sodipodi:nodetypes="zcssczzz" />

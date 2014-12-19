@@ -57,18 +57,20 @@ public class Planet extends Body {
     }
 
     public void drawToBatch(SpriteBatch batch) {
-        float scale = ((getRadius()+animationFrames) * 2) / texture.getWidth();
-        float x = getX() - texture.getWidth()*0.5f*scale;
-        float y = game.screenHeight - getY() - texture.getHeight()*0.5f*scale; // flipped
+        int textureWidth = texture.getWidth();
+        int textureHeight = texture.getHeight();
+        float scale = 2* ((getRadius()+animationFrames) * 2) / textureWidth;
+        float x = getX() - textureWidth*0.5f*scale;
+        float y = game.screenHeight - getY() - textureHeight*0.5f*scale; // flipped
         batch.draw(texture,
                 x,
                 y,
                 0,0,
-                texture.getWidth()+animationFrames, texture.getHeight()+animationFrames, // width,height
+                textureWidth+animationFrames, textureHeight+animationFrames, // width,height
                 scale, scale, // scale
                 0f, // rotation
                 0, 0, // source anchor
-                texture.getWidth(), texture.getHeight(), // source size
+                textureWidth, textureHeight, // source size
                 false, false
         );
         if (animationFrames > 0) animationFrames--;
