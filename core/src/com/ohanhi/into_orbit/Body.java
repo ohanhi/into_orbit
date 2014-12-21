@@ -17,7 +17,7 @@ public abstract class Body {
         this.x = x;
         this.y = y;
         this.m = m;
-        this.radius = (float)(pow(m, 1/3d) * 3) * 1.0f;
+        this.radius = (float)(pow(m, 1/3d) * 3) * Const.BODY_RADIUS_K;
         this.radiusK = radiusK;
     }
 

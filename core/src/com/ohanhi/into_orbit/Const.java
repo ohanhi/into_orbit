@@ -14,6 +14,7 @@ public class Const {
     public static final double TIME_SPEED = 8;
     public static final float PATH_RADIUS = 2f;
     public static final float SATELLITE_RADIUS = 3f;
+    public static final float BODY_RADIUS_K = 0.75f;
     public static final boolean PATH_COLORS = false;
     public static final int PATH_VERTEX_COUNT = 40;
     public static final int SCREEN_BORDER_THRESHOLD = 2000;
