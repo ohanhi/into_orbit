@@ -95,6 +95,7 @@ public class Satellite extends Body {
         if (!collided) {
             renderer.setColor(color);
             renderer.circle(getX(), getY(), getRadius());
+            //if (pathVertices.size() > 2) drawTriangle(renderer, pathVertices.get(1));
         }
     }
 
@@ -105,11 +106,13 @@ public class Satellite extends Body {
         renderer.translate(x, y, 0);
         renderer.rotate(0, 0, 1, (float) direction);
 
+        float k = game.radiusK;
+
         renderer.setColor(color);
         renderer.triangle(
-                -8, 0,
-                8, 0,
-                0, 20
+                -8*k, 0,
+                8*k, 0,
+                0, 16*k
         );
         renderer.end();
         renderer.begin(ShapeRenderer.ShapeType.Filled);
