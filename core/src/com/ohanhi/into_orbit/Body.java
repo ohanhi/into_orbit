@@ -17,7 +17,7 @@ public abstract class Body {
         this.x = x;
         this.y = y;
         this.m = m;
-        this.radius = (float)(pow(m, 1/3d) * 3) * Const.BODY_RADIUS_K;
+        this.radius = (float)(pow((3 * (m / Const.BODY_DENSITY)) / 4 * Math.PI, 1/3d) * 3);
         this.radiusK = radiusK;
     }
 

@@ -13,10 +13,10 @@ public class Const {
     public static final double COLLISION_DISTANCE = 0.0d;
     public static final double TIME_SPEED = 8;
     public static final float PATH_RADIUS = 2f;
-    public static final float SATELLITE_RADIUS = 3f;
-    public static final float BODY_RADIUS_K = 0.75f;
+    public static final float SATELLITE_RADIUS = 4f;
+    public static final float BODY_DENSITY = 5f;
     public static final boolean PATH_COLORS = false;
-    public static final int PATH_VERTEX_COUNT = 40;
+    public static final int PATH_VERTEX_COUNT = 40000;
     public static final int SCREEN_BORDER_THRESHOLD = 2000;
 
     public static final String SAVE_LEVEL = "level";
@@ -26,7 +26,7 @@ public class Const {
     public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
     public static final Color GOAL_FONT_COLOR = new Color(1, 1, 1, 0.4f);
     public static final Color GOAL_ACHIEVED_COLOR = new Color(1, 1, 1, 0.02f);
-    public static final Color HERO_COLOR = Color.valueOf("ffffffcc");
+    public static final Color HERO_COLOR = Color.valueOf("ff4081ff");
     public static final Color[] PLANET_COLORS = {
             Color.valueOf("eeff41ff"),
             Color.valueOf("c6ff00ff"),
