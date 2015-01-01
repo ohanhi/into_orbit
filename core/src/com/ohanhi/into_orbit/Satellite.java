@@ -93,7 +93,9 @@ public class Satellite extends Body {
         }
         // draw self
         if (!collided) {
-            renderer.setColor(color);
+            renderer.setColor(Const.HERO_REACH_COLOR);
+            renderer.circle(getX(), getY(), Const.SATELLITE_REACH_RADIUS * game.radiusK);
+            renderer.setColor(Const.HERO_COLOR);
             renderer.circle(getX(), getY(), getRadius());
             //if (pathVertices.size() > 2) drawTriangle(renderer, pathVertices.get(1));
         }
@@ -151,7 +153,7 @@ public class Satellite extends Body {
                 if (goal instanceof CircularGoal) {
                     CircularGoal g = ((CircularGoal) goal);
                     float r = (float)Satellite.dist(curX, curY, g.getX(), g.getY());
-                    if (checkCollision(r, getRadius(), g.getRadius())) {
+                    if (checkCollision(r, Const.SATELLITE_REACH_RADIUS * game.radiusK, g.getRadius())) {
                         if (lastMoveInsideGoal == null) {
                             lastMoveInsideGoal = g;
                             g.addContact();
