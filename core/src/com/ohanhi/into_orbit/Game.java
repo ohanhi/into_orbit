@@ -4,14 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 /**
@@ -23,19 +16,71 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Game extends ApplicationAdapter {
 
-    private OrthographicCamera camera;
-    private ShapeRenderer shapeRenderer;
-    private SpriteBatch batch;
-    private BitmapFont font;
-    private long lastTime;
+
+    public int getTouchDownX() {
+        return touchDownX;
+    }
+
+    public int getTouchDownY() {
+        return touchDownY;
+    }
+
+    public int getTouchX() {
+        return touchX;
+    }
+
+    public int getTouchY() {
+        return touchY;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
+
+    public float getRadiusK() {
+        return radiusK;
+    }
+
+    public long getGameTick() {
+        return gameTick;
+    }
+
+    public Goal[] getGoals() {
+        return goals;
+    }
+
+    public Satellite getSatellite() {
+        return satellite;
+    }
+
+    public PlanetSystem getPlanetSystem() {
+        return planetSystem;
+    }
+
+    public InputProcessor getGameInputProcessor() {
+        return gameInputProcessor;
+    }
+
+    public InputProcessor getButtonInputProcessor() {
+        return buttonInputProcessor;
+    }
+
     private int touchDownX = -1;
     private int touchDownY = -1;
     private int touchX = -1;
     private int touchY = -1;
     private int currentLevel = 0;
-    private int levelAnimationFrames = 0;
     private LevelPack levelPack;
     private SaveManager saveManager;
+    private WorldRenderer worldRenderer;
 
     // values that can be used elsewhere
     protected int screenWidth = 1280;
@@ -93,111 +138,40 @@ public class Game extends ApplicationAdapter {
         goals = levelPack.getLevelGoals(n);
         satellite = null;
         resetLevel();
-        showLevelAnimation();
+        worldRenderer.startLevelAnimation();
         currentLevel = n;
         saveManager.saveDataValue(Const.SAVE_LEVEL, n);
     }
 
-    private void showLevelAnimation() {
-        levelAnimationFrames = 60;
-    }
-
-    private void drawLevelAnimationFrame() {
-        float alpha = (float)Math.cos((levelAnimationFrames / (60 * 2)) * Math.PI);
-        renderText("Level " + (currentLevel+1), alpha);
-    }
 
     private void init() {
         saveManager = new SaveManager(true);
         Integer level = saveManager.loadDataValue(Const.SAVE_LEVEL, Integer.class);
         if (level != null) currentLevel = level.intValue();
-        shapeRenderer = new ShapeRenderer();
-        batch = new SpriteBatch();
-        font = new BitmapFont(
-                new BitmapFont.BitmapFontData(Gdx.files.internal("open-sans.fnt"), false),
-                (TextureRegion)null,
-                false
-        );
-        camera = new OrthographicCamera();
+
     }
 
     @Override
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor);
+        worldRenderer = new WorldRenderer(this);
 
         init();
     }
 
-    private void setUpAlphaBlending() {
-        // set up alpha blending
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-    }
+
 
     @Override
     public void render() {
         gameTick++;
         final double delta = Gdx.graphics.getDeltaTime() * Const.TIME_SPEED;
-        final boolean won = checkWin();
-
-        // tell the camera to update its matrices.
-        camera.update();
-
-        // tell the SpriteBatch to render in the
-        // coordinate system specified by the camera.
-        camera.setToOrtho(true);
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        camera.setToOrtho(false);
-        batch.setProjectionMatrix(camera.combined);
-
-        // begin a new render
-        Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        setUpAlphaBlending();
-
-        // draw background gradient
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect(0,0, screenWidth, screenHeight,
-                Const.BG_COLOR, Const.BG_COLOR, Const.BG_COLOR_2, Const.BG_COLOR_2);
-
-        // draw goal circles
-        for (Goal goal : goals) {
-            goal.drawToRenderer(shapeRenderer);
-        }
-        shapeRenderer.end();
-
-        batch.begin();
-        // draw goal numbers
-        for (Goal _goal : goals) {
-            CircularGoal goal = (CircularGoal)_goal;
-            goal.renderNumber(batch, font, screenHeight);
-        }
-        batch.end();
-
-        setUpAlphaBlending();
-
-        // draw satellite / launch
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        if (satellite != null) {
-            satellite.drawToRenderer(shapeRenderer);
-        }
-        if (touchX >= 0) {
-            drawLaunch(shapeRenderer);
-        }
-        shapeRenderer.end();
-
-        batch.begin();
-        // draw planets
-        setUpAlphaBlending();
-        planetSystem.drawToBatch(batch);
 
 
-        if (won) renderText("Nice! Tap to continue.", 1);
-        batch.end();
+        // render world
+        worldRenderer.render();
 
         // set the input processor based on whether the level is won
-        if (won) {
+        if (isWon()) {
             Gdx.input.setInputProcessor(buttonInputProcessor);
         } else {
             Gdx.input.setInputProcessor(gameInputProcessor);
@@ -207,39 +181,10 @@ public class Game extends ApplicationAdapter {
         if (satellite != null && !satellite.hasCollided()) {
             satellite.move(delta, gameTick, 20);
         }
-
-        if (levelAnimationFrames > 0) {
-            Gdx.input.setInputProcessor(null);
-            batch.begin();
-            setUpAlphaBlending();
-            drawLevelAnimationFrame();
-            batch.end();
-            levelAnimationFrames--;
-        }
     }
 
-    private void drawLaunch(ShapeRenderer renderer) {
-        setUpAlphaBlending();
-        renderer.setColor(Const.HERO_COLOR);
-        renderer.circle(touchDownX, touchDownY, Const.SATELLITE_RADIUS * radiusK);
-        renderer.setColor(Color.WHITE);
-        renderer.rectLine(touchDownX, touchDownY, touchDownX*2 - touchX, touchDownY*2 - touchY, 2);
-    }
 
-    private void renderText(String text) {
-        BitmapFont.TextBounds bounds = font.getBounds(text);
-        float x = screenWidth / 2 - bounds.width / 2;
-        float y = 2 * screenHeight / 3 + bounds.height / 2;
-
-        font.draw(batch, text, x, y);
-    }
-
-    private void renderText(String text, float alpha) {
-        font.setColor(1,1,1, alpha);
-        renderText(text);
-    }
-
-    public Boolean checkWin() {
+    public Boolean isWon() {
         Boolean allDone = true;
         for (Goal goal : goals) {
             allDone = allDone && goal.isAchieved();
@@ -256,7 +201,7 @@ public class Game extends ApplicationAdapter {
     }
 
     public void resetIfNotWon() {
-        if (!checkWin()) {
+        if (!isWon()) {
             resetLevel();
         }
     }
@@ -280,17 +225,9 @@ public class Game extends ApplicationAdapter {
             levelPack.dispose();
             levelPack = null;
         }
-        if (shapeRenderer != null) {
-            shapeRenderer.dispose();
-            shapeRenderer = null;
-        }
-        if (batch != null) {
-            batch.dispose();
-            batch = null;
-        }
-        if (font != null) {
-            font.dispose();
-            font = null;
+        if (worldRenderer != null) {
+            worldRenderer.dispose();
+            worldRenderer = null;
         }
     }
 
@@ -299,8 +236,6 @@ public class Game extends ApplicationAdapter {
         radiusK = radiusK * width / screenWidth;
         screenWidth = width;
         screenHeight = height;
-        camera.setToOrtho(true, screenWidth, screenHeight);
-        lastTime = TimeUtils.nanoTime();
 
         if (levelPack != null) {
             levelPack.dispose();
@@ -309,6 +244,7 @@ public class Game extends ApplicationAdapter {
         levelPack = new LevelPack(this);
         planetSystem = levelPack.getLevelPlanets(currentLevel);
         satellite = null;
+        worldRenderer.resize(width, height);
 
         selectLevel(currentLevel);
     }
