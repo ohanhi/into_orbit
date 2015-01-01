@@ -33,6 +33,11 @@ public class Satellite extends Body {
     private float curY;
     private float traveled;
     private Planet[] planets;
+
+    public ArrayList<float[]> getPathVertices() {
+        return pathVertices;
+    }
+
     private ArrayList<float[]> pathVertices;
     private boolean collided;
     private double maxVelocity = 0;
@@ -81,44 +86,6 @@ public class Satellite extends Body {
 
     public int getMaxVelocityRound() {
         return (int)Math.round(getMaxVelocity());
-    }
-
-    public void drawToRenderer(ShapeRenderer renderer) {
-        // draw path
-        for (int i = 0; i < pathVertices.size(); i++) {
-            float point[] = pathVertices.get(i);
-            Color color = Const.pathVertexColor(point[2], i);
-            renderer.setColor(color);
-            renderer.circle(point[0], point[1], Const.PATH_RADIUS);
-        }
-        // draw self
-        if (!collided) {
-            renderer.setColor(Const.HERO_REACH_COLOR);
-            renderer.circle(getX(), getY(), Const.SATELLITE_REACH_RADIUS * game.radiusK);
-            renderer.setColor(Const.HERO_COLOR);
-            renderer.circle(getX(), getY(), getRadius());
-            //if (pathVertices.size() > 2) drawTriangle(renderer, pathVertices.get(1));
-        }
-    }
-
-    private void drawTriangle(ShapeRenderer renderer, float[] lastPoint) {
-        float x = getX(), y = getY();
-        double direction = -Math.toDegrees(Math.atan2(x-lastPoint[0], y-lastPoint[1]));
-        renderer.identity();
-        renderer.translate(x, y, 0);
-        renderer.rotate(0, 0, 1, (float) direction);
-
-        float k = game.radiusK;
-
-        renderer.setColor(color);
-        renderer.triangle(
-                -8*k, 0,
-                8*k, 0,
-                0, 16*k
-        );
-        renderer.end();
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.identity();
     }
 
     private boolean checkCollision(float r, float radius1, float radius2) {

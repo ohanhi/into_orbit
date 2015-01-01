@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.ArrayList;
+
 /**
  * Created by ohan on 1.1.2015.
  */
@@ -65,6 +67,61 @@ public class WorldRenderer {
         //float alpha = (float)Math.cos((levelAnimationFrames / (60f * 2)) * Math.PI - Math.PI);
         float alpha = 1;
         renderText("Level " + (game.getCurrentLevel() + 1), alpha);
+    }
+
+    private void renderSatellite() {
+        // draw path
+        Satellite sat = game.getSatellite();
+        ArrayList<float[]> pathVertices = sat.getPathVertices();
+        for (int i = 0; i < pathVertices.size(); i++) {
+            float point[] = pathVertices.get(i);
+            Color color = Const.pathVertexColor(point[2], i);
+            shapeRenderer.setColor(color);
+            shapeRenderer.circle(point[0], point[1], Const.PATH_RADIUS);
+        }
+        // draw self
+        if (!sat.hasCollided()) {
+            shapeRenderer.setColor(Const.HERO_REACH_COLOR);
+            shapeRenderer.circle(sat.getX(), sat.getY(), Const.SATELLITE_REACH_RADIUS * game.radiusK);
+            shapeRenderer.setColor(Const.HERO_COLOR);
+            shapeRenderer.circle(sat.getX(), sat.getY(), sat.getRadius());
+            //if (pathVertices.size() > 2) drawTriangle(renderer, pathVertices.get(1));
+        }
+    }
+
+    private void renderPlanets(Planet[] planets) {
+        // colored circles
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        for (Planet planet : planets) {
+            int animationFrames = planet.animationFramePop();
+            shapeRenderer.setColor(planet.getColor());
+            shapeRenderer.circle(planet.getX(), planet.getY(), planet.getRadius() + animationFrames);
+        }
+        shapeRenderer.end();
+
+        // translucent textures
+        batch.begin();
+        for (Planet planet :planets) {
+            int animationFrames = planet.getAnimationFrames();
+            Texture texture = planet.getTexture();
+            int textureWidth = texture.getWidth();
+            int textureHeight = texture.getHeight();
+            float scale = 2 * ((planet.getRadius() + animationFrames) * 2) / textureWidth;
+            float x = planet.getX() - textureWidth * 0.5f * scale;
+            float y = game.screenHeight - planet.getY() - textureHeight * 0.5f * scale; // flipped
+            batch.draw(texture,
+                    x,
+                    y,
+                    0, 0,
+                    textureWidth + animationFrames, textureHeight + animationFrames, // width,height
+                    scale, scale, // scale
+                    0f, // rotation
+                    0, 0, // source anchor
+                    textureWidth, textureHeight, // source size
+                    false, false
+            );
+        }
+        batch.end();
     }
     
     public void renderText(String text) {
@@ -129,19 +186,20 @@ public class WorldRenderer {
         // draw satellite / launch
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         if (game.satellite != null) {
-            game.satellite.drawToRenderer(shapeRenderer);
+            renderSatellite();
         }
         if (game.getTouchX() >= 0) {
             drawLaunch();
         }
         shapeRenderer.end();
 
-        batch.begin();
+
         // draw planets
         setUpAlphaBlending();
-        game.planetSystem.drawToBatch(batch);
+        renderPlanets(game.planetSystem.getPlanets());
 
 
+        batch.begin();
         if (won) renderText("Nice! Tap to continue.", 1);
 
 

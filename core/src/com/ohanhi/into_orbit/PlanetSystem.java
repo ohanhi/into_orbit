@@ -41,18 +41,6 @@ public class PlanetSystem {
         return planets;
     }
 
-    public void drawToRenderer(ShapeRenderer renderer) {
-        for (int i = 0; i < planets.length; i++) {
-            planets[i].drawToRenderer(renderer);
-        }
-    }
-
-    public void drawToBatch(SpriteBatch batch) {
-        for (int i = 0; i < planets.length; i++) {
-            planets[i].drawToBatch(batch);
-        }
-    }
-
     public void dispose() {
         for (Planet planet : planets) {
             planet.dispose();

@@ -18,6 +18,16 @@ public class Planet extends Body {
 
     private Color color;
     private int animationFrames;
+
+    public int animationFramePop() {
+        if (animationFrames > 0) return animationFrames--;
+        else return 0;
+    }
+
+    public int getAnimationFrames() {
+        return animationFrames;
+    }
+
     private Texture texture;
     private Game game;
 
@@ -34,10 +44,6 @@ public class Planet extends Body {
         this.color = Const.PLANET_COLORS[0];
     }
 
-    public void setColor(float biggestMass) {
-        this.color = Const.massToColor(getM(), biggestMass);
-    }
-
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
@@ -46,35 +52,18 @@ public class Planet extends Body {
         this.color = color;
     }
 
+    public Texture getTexture() {
+        return texture;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
     public void twinkle() {
         animationFrames = 10;
     }
 
-    public void drawToRenderer(final ShapeRenderer renderer) {
-        renderer.setColor(color);
-        renderer.circle(getX(), getY(), getRadius() + animationFrames);
-        if (animationFrames > 0) animationFrames--;
-    }
-
-    public void drawToBatch(SpriteBatch batch) {
-        int textureWidth = texture.getWidth();
-        int textureHeight = texture.getHeight();
-        float scale = 2* ((getRadius()+animationFrames) * 2) / textureWidth;
-        float x = getX() - textureWidth*0.5f*scale;
-        float y = game.screenHeight - getY() - textureHeight*0.5f*scale; // flipped
-        batch.draw(texture,
-                x,
-                y,
-                0,0,
-                textureWidth+animationFrames, textureHeight+animationFrames, // width,height
-                scale, scale, // scale
-                0f, // rotation
-                0, 0, // source anchor
-                textureWidth, textureHeight, // source size
-                false, false
-        );
-        if (animationFrames > 0) animationFrames--;
-    }
 
     public void dispose() {
         texture.dispose();
