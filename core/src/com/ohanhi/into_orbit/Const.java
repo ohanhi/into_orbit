@@ -3,7 +3,6 @@ package com.ohanhi.into_orbit;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 /**
  * Created by ohan on 16.10.2014.
@@ -22,8 +21,6 @@ public class Const {
 
     public static final String SAVE_LEVEL = "level";
 
-    public static final Color BG_COLOR = Color.valueOf("673ab7ff");
-    public static final Color BG_COLOR_2 = Color.valueOf("311b92ff");
     public static final Color GOAL_COLOR = new Color(1, 1, 1, 0.2f);
     public static final Color GOAL_FONT_COLOR = new Color(1, 1, 1, 0.4f);
     public static final Color GOAL_ACHIEVED_COLOR = new Color(1, 1, 1, 0);
@@ -35,7 +32,6 @@ public class Const {
             Color.valueOf("ff9100ff")
     };
 
-    public static final Skin SKIN = new Skin(Gdx.files.internal("uiskin.json"));
     public static final FileHandle[] PLANET_TEXTURE_FILES = {
             Gdx.files.internal("planet-1.png"),
             Gdx.files.internal("planet-2.png"),
@@ -75,11 +71,6 @@ public class Const {
                 blend(c1.b, c2.b, ratio),
                 blend(c1.a, c2.a, ratio)
         );
-    }
-
-    public static Color massToColor(float m, float biggestMass) {
-        float hue = (float)(Math.atan(m / biggestMass) * 0.06 + 0.12) % 1;
-        return hsvToRgb(hue, 1, 1, 1);
     }
 
     public static Color pathVertexColor(float v, int idx) {
