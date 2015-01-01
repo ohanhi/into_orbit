@@ -27,15 +27,25 @@ public class Const {
     public static final Color HERO_COLOR = Color.valueOf("ffffffcc");
     public static final Color HERO_REACH_COLOR = GOAL_COLOR;
     public static final Color[] PLANET_COLORS = {
-            Color.valueOf("eeff41ff"),
-            Color.valueOf("c6ff00ff"),
-            Color.valueOf("ff9100ff")
+            Color.valueOf("FF5252"), // Red A200
+            Color.valueOf("E91E63"), // Pink 500
+            Color.valueOf("E040FB"), // Purple A200
+            Color.valueOf("40C4FF"), // Light blue A200
+            Color.valueOf("00E5FF"), // Cyan A400
+            Color.valueOf("64FFDA"), // Teal A200
+            Color.valueOf("69F0AE"), // Green A200
+            Color.valueOf("00E676"), // Green A400
+            Color.valueOf("FFEA00"), // Yellow A400
+            Color.valueOf("FFC400"), // Amber A400
+            Color.valueOf("FFAB40"), // Orange A200
+            Color.valueOf("E0E0E0"), // Grey 300
+            Color.valueOf("CFD8DC") // Blue gray 100
     };
 
     public static final FileHandle[] PLANET_TEXTURE_FILES = {
-            Gdx.files.internal("planet-1.png"),
-            Gdx.files.internal("planet-2.png"),
-            Gdx.files.internal("planet-3.png")
+            Gdx.files.internal("planet-1-texture.png"),
+            Gdx.files.internal("planet-2-texture.png"),
+            Gdx.files.internal("planet-3-texture.png")
     };
     public static final FileHandle SAVE_FILE = Gdx.files.local("save.json");
 

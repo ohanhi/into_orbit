@@ -23,17 +23,15 @@ public class PlanetSystem {
 
     private void setPlanetColors() {
         for (int i = 0; i < planets.length; i++) {
-            planets[i].setColor(
-                    Const.PLANET_COLORS[i%Const.PLANET_COLORS.length]
-            );
+            int n = (int)(Math.random() * Const.PLANET_COLORS.length);
+            planets[i].setColor(Const.PLANET_COLORS[n]);
         }
     }
 
     private void setPlanetTextures() {
         for (int i = 0; i < planets.length; i++) {
-            planets[i].setTexture(
-                new Texture(Const.PLANET_TEXTURE_FILES[i % Const.PLANET_TEXTURE_FILES.length])
-            );
+            int n = (int)(Math.random() * Const.PLANET_TEXTURE_FILES.length);
+            planets[i].setTexture(new Texture(Const.PLANET_TEXTURE_FILES[n]));
         }
     }
 
