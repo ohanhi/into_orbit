@@ -145,6 +145,7 @@ public class Game extends ApplicationAdapter {
 
 
     private void init() {
+        worldRenderer = new WorldRenderer(this);
         saveManager = new SaveManager(true);
         Integer level = saveManager.loadDataValue(Const.SAVE_LEVEL, Integer.class);
         if (level != null) currentLevel = level.intValue();
@@ -154,7 +155,6 @@ public class Game extends ApplicationAdapter {
     @Override
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor);
-        worldRenderer = new WorldRenderer(this);
 
         init();
     }
@@ -244,7 +244,7 @@ public class Game extends ApplicationAdapter {
         levelPack = new LevelPack(this);
         planetSystem = levelPack.getLevelPlanets(currentLevel);
         satellite = null;
-        worldRenderer.resize(width, height);
+        if(worldRenderer != null) worldRenderer.resize(width, height);
 
         selectLevel(currentLevel);
     }
