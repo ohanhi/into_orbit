@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Color;
  * Created by ohan on 16.10.2014.
  */
 public class Const {
+    public static final boolean DEBUG = true;
+
     public static final double GRAVITATIONAL_CONSTANT = 4.0d;
     public static final double COLLISION_DISTANCE = 0.0d;
     public static final double TIME_SPEED = 8;

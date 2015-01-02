@@ -133,6 +133,7 @@ public class Game extends ApplicationAdapter {
     }
 
     public void selectLevel(int n) {
+        if (Const.DEBUG) n = 0;
         if (planetSystem != null) planetSystem.dispose();
         planetSystem = levelPack.getLevelPlanets(n);
         goals = levelPack.getLevelGoals(n);
@@ -149,7 +150,6 @@ public class Game extends ApplicationAdapter {
         saveManager = new SaveManager(true);
         Integer level = saveManager.loadDataValue(Const.SAVE_LEVEL, Integer.class);
         if (level != null) currentLevel = level.intValue();
-
     }
 
     @Override
