@@ -15,8 +15,8 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.5 r10040"
-   sodipodi:docname="planet-3-texture.svg"
-   inkscape:export-filename="/home/ohan/dev/into_orbit/res/planet-3-texture.png"
+   sodipodi:docname="planet-2-texture-filled.svg"
+   inkscape:export-filename="/home/ohan/dev/into_orbit/res/planet-2-texture-filled.png"
    inkscape:export-xdpi="360"
    inkscape:export-ydpi="360">
   <defs
@@ -181,14 +181,14 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.7781746"
-     inkscape:cx="4.4085638"
+     inkscape:cx="-18.540265"
      inkscape:cy="27.49644"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1918"
-     inkscape:window-height="1019"
+     inkscape:window-height="1139"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1" />
@@ -229,7 +229,17 @@
        d="M 63.454546,34 A 30.181818,30.181818 0 1 1 3.09091,34 30.181818,30.181818 0 1 1 63.454546,34 z"
        transform="matrix(0.5301205,0,0,0.5301205,14.361445,13.975903)" />
     <path
-       style="fill:url(#linearGradient5259-8-6);fill-opacity:1;stroke:none;opacity:0.2"
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:1;stroke:none"
+       id="path2993-9-5"
+       sodipodi:cx="33.272728"
+       sodipodi:cy="34"
+       sodipodi:rx="30.181818"
+       sodipodi:ry="30.181818"
+       d="M 63.454546,34 A 30.181818,30.181818 0 1 1 3.09091,34 30.181818,30.181818 0 1 1 63.454546,34 z"
+       transform="matrix(0.5301205,0,0,0.5301205,14.361445,13.975903)" />
+    <path
+       style="fill:url(#linearGradient5259-8-6);fill-opacity:1;stroke:none;opacity:0.5"
        d="m 39.925878,41.688404 c 3.293795,-0.115115 4.835545,0.177586 3.387829,1.625301 -2.89543,2.895431 -6.89543,4.686292 -11.313708,4.686292 C 23.163442,47.999997 16,40.836553 16,31.999999 c 0,-2.20914 0.447715,-4.313709 1.257359,-6.227921 0.404821,-0.957108 0.900125,-1.866626 1.475188,-2.717831 0.539703,-0.857449 0.359948,1.474396 0.615116,2.992884 0.374192,1.383865 0.219826,3.657811 3.60688,3.998322 1.055086,0.106071 0.979958,4.180027 2.677348,4.36811 6.980016,0.604086 4.983042,5.469568 8.452196,5.179183 2.285471,-0.310421 2.547996,2.210772 5.841791,2.095658 z"
        id="path3803-8-8"
        inkscape:connector-curvature="0"

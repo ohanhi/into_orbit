@@ -90,25 +90,17 @@ public class WorldRenderer {
     }
 
     private void renderPlanets(Planet[] planets) {
-        // colored circles
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        for (Planet planet : planets) {
-            int animationFrames = planet.animationFramePop();
-            shapeRenderer.setColor(planet.getColor());
-            shapeRenderer.circle(planet.getX(), planet.getY(), planet.getRadius() + animationFrames);
-        }
-        shapeRenderer.end();
-
-        // translucent textures
+        // tinted textures
         batch.begin();
         for (Planet planet :planets) {
-            int animationFrames = planet.getAnimationFrames();
+            int animationFrames = planet.animationFramePop();
             Texture texture = planet.getTexture();
             int textureWidth = texture.getWidth();
             int textureHeight = texture.getHeight();
             float scale = 2 * ((planet.getRadius() + animationFrames) * 2) / textureWidth;
             float x = planet.getX() - textureWidth * 0.5f * scale;
             float y = game.screenHeight - planet.getY() - textureHeight * 0.5f * scale; // flipped
+            batch.setColor(planet.getColor());
             batch.draw(texture,
                     x,
                     y,
@@ -121,6 +113,7 @@ public class WorldRenderer {
                     false, false
             );
         }
+        batch.setColor(Color.WHITE);
         batch.end();
     }
     

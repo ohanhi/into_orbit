@@ -41,13 +41,15 @@ public class Const {
             Color.valueOf("FFC400"), // Amber A400
             Color.valueOf("FFAB40"), // Orange A200
             Color.valueOf("E0E0E0"), // Grey 300
+            Color.valueOf("FFFFFF"), // White
             Color.valueOf("CFD8DC") // Blue gray 100
     };
 
     public static final FileHandle[] PLANET_TEXTURE_FILES = {
-            Gdx.files.internal("planet-1-texture.png"),
-            Gdx.files.internal("planet-2-texture.png"),
-            Gdx.files.internal("planet-3-texture.png")
+            Gdx.files.internal("planet-1-texture-filled.png"),
+            Gdx.files.internal("planet-2-texture-filled.png"),
+            Gdx.files.internal("planet-3-texture-filled.png"),
+            Gdx.files.internal("planet-4-texture-filled.png")
     };
     public static final FileHandle SAVE_FILE = Gdx.files.local("save.json");
 
