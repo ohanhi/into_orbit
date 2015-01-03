@@ -146,17 +146,19 @@ public class Game extends ApplicationAdapter {
 
 
     private void init() {
+        dispose();
         worldRenderer = new WorldRenderer(this);
         saveManager = new SaveManager(true);
+        levelPack = new LevelPack(this);
         Integer level = saveManager.loadDataValue(Const.SAVE_LEVEL, Integer.class);
         if (level != null) currentLevel = level.intValue();
+
+        selectLevel(currentLevel);
     }
 
     @Override
     public void create() {
         Gdx.input.setInputProcessor(gameInputProcessor);
-
-        init();
     }
 
 
@@ -237,16 +239,15 @@ public class Game extends ApplicationAdapter {
         screenWidth = width;
         screenHeight = height;
 
-        if (levelPack != null) {
-            levelPack.dispose();
-        }
-        goals = new Goal[0];
-        levelPack = new LevelPack(this);
-        planetSystem = levelPack.getLevelPlanets(currentLevel);
-        satellite = null;
-        if(worldRenderer != null) worldRenderer.resize(width, height);
+//        if (levelPack != null) {
+//            levelPack.dispose();
+//        }
+//        goals = new Goal[0];
+//        levelPack = new LevelPack(this);
+//        planetSystem = levelPack.getLevelPlanets(currentLevel);
+//        satellite = null;
 
-        selectLevel(currentLevel);
+        init();
     }
 
     @Override
